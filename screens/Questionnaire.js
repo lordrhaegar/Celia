@@ -1,8 +1,8 @@
 import { View, Text, ScrollView, useWindowDimensions } from 'react-native'
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import Header from '../components/Header'
-import Footer from '../components/Footer'
+import Header from '../components/includes/Header'
+import Footer from '../components/includes/Footer'
 import QuestionnaireBody from '../components/screen body/QuestionnaireBody'
 import { styles } from '../styles/Styles'
 
@@ -11,16 +11,15 @@ const Questionnaire = () => {
   const height = useWindowDimensions().height
   return (
     <SafeAreaView
+      style={styles.safeArea}
     >
       <ScrollView
       >
-        <View
-        style={{paddingTop: 50, flex: 1}}
-        >
-          <Header pageName={pageName} />
-          <QuestionnaireBody />
-          <Footer isChecked={true} pageName={pageName} />
-        </View>
+
+        <Header pageName={pageName} />
+        <QuestionnaireBody />
+        <Footer isChecked={true} pageName={pageName} />
+
       </ScrollView>
     </SafeAreaView>
   )

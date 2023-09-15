@@ -1,6 +1,6 @@
 import { View, Text, TouchableOpacity, TextInput, Platform } from 'react-native'
 import { React, useState } from 'react'
-import { styles } from '../styles/Styles';
+import { styles } from '../../styles/Styles';
 import { AntDesign } from '@expo/vector-icons';
 import { KeyboardAvoidingView } from 'react-native';
 import validator from 'validator';

@@ -3,7 +3,7 @@ import { slides } from '../constants/constants';
 import { React, useState, useRef, useEffect } from 'react'
 import OnBoardingItems from '../components/OnBoardingItems';
 import Paginator from '../components/Paginator';
-import NextButton from '../components/NextButton';
+import NextButton from '../components/buttons/NextButton';
 
 const OnboardingScreen = () => {
     const [currentIndex, setCurrentIndex] = useState(0);

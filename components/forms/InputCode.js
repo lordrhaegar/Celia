@@ -1,7 +1,7 @@
 import { View, Text, KeyboardAvoidingView, TouchableOpacity, TextInput } from 'react-native'
 import React, { useRef, useState, useEffect } from 'react'
 import { AntDesign } from '@expo/vector-icons';
-import { styles } from '../styles/Styles';
+import { styles } from '../../styles/Styles';
 
 const InputCode = ({ closeModal }) => {
 

@@ -1,10 +1,10 @@
 import { View, Text } from 'react-native'
 import React, { useState } from 'react'
-import { styles } from '../styles/Styles'
+import { styles } from '../../styles/Styles'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { useNavigation } from '@react-navigation/native'
 import { AntDesign } from '@expo/vector-icons'
-import SaveModal from './modals/SaveModal'
+import SaveModal from '../modals/SaveModal'
 
 const Footer = ({ isChecked, pageName }) => {
     const navigator = useNavigation();
@@ -57,6 +57,9 @@ const Footer = ({ isChecked, pageName }) => {
                         case 'SymptomProgress':
                             navigator.navigate('ThankYou')
                             break;
+                        case 'ThankYou':
+                            navigator.navigate('Diagnosis')
+                            break;
                         default:
                             break;
                     }
@@ -69,8 +72,8 @@ const Footer = ({ isChecked, pageName }) => {
                     {pageName === 'NewDiagnosis' ? 'Start' :
                         pageName === 'OtherSymptoms' ? 'No, I don\'t' :
                             pageName === 'SymptomProgress' ? 'Finish' :
-                            pageName === 'ThankYou' ? 'Okay, show me' :
-                                'Next'}</Text>
+                                pageName === 'ThankYou' ? 'Okay, show me' :
+                                    'Next'}</Text>
             </TouchableOpacity>
             <SaveModal isSaveModal={isSaveModal} closeSaveModal={closeSaveModal} />
         </View>

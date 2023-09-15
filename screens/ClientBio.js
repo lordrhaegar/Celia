@@ -1,8 +1,8 @@
 import { View, Text, useWindowDimensions } from 'react-native'
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import Header from '../components/Header'
-import Footer from '../components/Footer'
+import Header from '../components/includes/Header'
+import Footer from '../components/includes/Footer'
 import NoticeModal from '../components/modals/NoticeModal'
 import ClientBioBody from '../components/screen body/ClientBioBody'
 import { styled } from 'nativewind'
@@ -13,7 +13,7 @@ const ClientBio = () => {
     const pageName = 'ClientBio';
     const isChecked = true;
     return (
-        <SafeAreaView style={{flex: 1, paddingTop: 20, backgroundColor: '#FDFDFD' }}>
+        <SafeAreaView style={styles.safeArea}>
             <View
             style={styles.fullScreen}
             >

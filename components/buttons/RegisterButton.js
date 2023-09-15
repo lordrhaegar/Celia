@@ -1,7 +1,7 @@
 import { View, Text, TouchableOpacity, Modal } from 'react-native'
 import { React, useState } from 'react'
-import { styles } from '../styles/Styles';
-import SignupForm from './SignupForm';
+import { styles } from '../../styles/Styles';
+import SignupForm from '../forms/SignupForm';
 
 const RegisterButton = ({openRegModal}) => {
     return (

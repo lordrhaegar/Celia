@@ -3,8 +3,8 @@ import { useCallback, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Overlay from '../components/Overlay'
 import OnboardingScreen from './OnboardingScreen';
-import SkipButton from '../components/SkipButton';
-import GetStarted from '../components/GetStarted';
+import SkipButton from '../components/buttons/SkipButton';
+import GetStarted from '../components/buttons/GetStarted';
 import { useFonts } from 'expo-font';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import * as SplashScreen from 'expo-splash-screen';

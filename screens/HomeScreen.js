@@ -23,7 +23,7 @@ const HomeScreen = () => {
         <SafeAreaView>
             <ScrollView
                 showsVerticalScrollIndicator={false}
-                contentContainerStyle={{ backgroundColor: '#FDFDFD', paddingVertical: 20 }}>
+                contentContainerStyle={styles.scrollView}>
                 <View style={{ height: "5%" }} className="flex-row px-5 items-center justify-between">
                     <Text style={styles.title} className="text-black font-medium">Hi there</Text>
                     <MaterialIcons

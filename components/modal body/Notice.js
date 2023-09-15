@@ -72,6 +72,11 @@ const Notice = ({ pageName, closeNoticeModal }) => {
                                         navigator.pop()
                                     }
                                     break;
+                                case 'Diagnosis':
+                                    for (let i = 0; i < 11; i++) {
+                                        navigator.pop()
+                                    }
+                                    break;
                                 default:
                                     break;
                             }

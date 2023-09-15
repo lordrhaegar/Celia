@@ -4,6 +4,15 @@ export const styles = StyleSheet.create({
     fullScreen: {
         flex: 1
     },
+    safeArea: {
+        flex: 1,
+        paddingTop: 20,
+        backgroundColor: '#FDFDFD'
+    },
+    scrollView: {
+        backgroundColor: '#FDFDFD',
+        paddingVertical: 20
+    },
     button: {
         borderWidth: 0,
         borderRadius: 500,
@@ -226,7 +235,7 @@ export const styles = StyleSheet.create({
     },
     privacyBody: {
         display: 'flex',
-        height: Platform.OS === 'ios' ? '88%': null,
+        height: Platform.OS === 'ios' ? '88%' : null,
         flex: Platform.OS === 'android' ? 1 : null,
         paddingHorizontal: 20,
         paddingVertical: 32,
@@ -402,7 +411,7 @@ export const styles = StyleSheet.create({
     },
     questionnaireBody: {
         display: 'flex',
-        height: Platform.OS === 'ios' ? '88%': null,
+        height: Platform.OS === 'ios' ? '88%' : null,
         flex: Platform.OS === 'android' ? 1 : null,
         paddingHorizontal: 20,
         paddingVertical: 20,
@@ -542,7 +551,7 @@ export const styles = StyleSheet.create({
         lineHeight: 20,
     },
     durationQuestionBody: {
-        height: Platform.OS === 'ios' ? '88%': null,
+        height: Platform.OS === 'ios' ? '88%' : null,
         flex: Platform.OS === 'android' ? 1 : null,
         paddingHorizontal: 20,
         paddingVertical: 32,
@@ -560,6 +569,83 @@ export const styles = StyleSheet.create({
         fontFamily: 'Gilroy',
         fontWeight: '400',
         lineHeight: 24,
+    },
+    summaryBody: {
+        width: '100%',
+        padding: 20,
+        justifyContent: 'center',
+        alignItems: 'flex-start',
+        gap: 12,
+        display: 'inline-flex'
+    },
+    summaryHeadText: {
+        color: '#27292A',
+        fontSize: 14,
+        fontFamily: 'Gilroy-B',
+        fontWeight: '600',
+        lineHeight: 20,
+    },
+    summaryParagraphText: {
+        color: '#666B6E',
+        fontSize: 14,
+        fontFamily: 'Gilroy',
+        fontWeight: '400',
+        lineHeight: 20,
+    },
+    patientInfoText: {
+        color: '#27292A',
+        fontSize: 14,
+        fontFamily: 'Gilroy',
+        fontWeight: '400',
+        lineHeight: 20,
+    },
+    causesBody: {
+        width: '100%',
+        padding: 20,
+        justifyContent: 'flex-end',
+        alignItems: 'flex-start',
+        gap: 12,
+        display: 'inline-flex'
+    },
+    causesText: {
+        color: '#0D91DC',
+        fontSize: 18,
+        fontFamily: 'Gilroy',
+        fontWeight: '600',
+        lineHeight: 28,
+    },
+    managedHome: {
+        color: '#63A7A7',
+        fontSize: 12,
+        fontFamily: 'Gilroy',
+        fontWeight: '400',
+        lineHeight: 20,
+    },
+    pillText: {
+        color: '#666B6E',
+        fontSize: 12,
+        fontFamily: 'Gilroy',
+        fontWeight: '400',
+        lineHeight: 20,
+    },
+    pillsContainer: {
+        width: '100%',
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        gap: 5
+    },
+    progressBarContainer: {
+        gap: 8,
+        paddingVertical: 12,
+        alignItems: 'flex-start',
+        marginBottom: 20,
+    },
+    percentageText: {
+        color: '#0D91DC',
+        fontSize: 18,
+        fontFamily: 'Gilroy',
+        fontWeight: '600',
+        lineHeight: 28,
     }
-
 })

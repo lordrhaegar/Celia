@@ -1,9 +1,6 @@
 import { View, Text, TouchableOpacity, Modal } from 'react-native'
-import { React, useState } from 'react'
-import { BottomSheetModal } from '@gorhom/bottom-sheet';
-import { styles } from '../styles/Styles'
-import LoginWrapper from './LoginWrapper';
-import SigninForm from './SigninForm';
+import { React} from 'react'
+import { styles } from '../../styles/Styles'
 
 const LogInButton = ({openLoginModal}) => {
     return (

@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react'
 import { styles } from '../../styles/Styles'
 import { logo } from '../../constants/constants'
 import { CheckBox } from 'react-native-elements'
-import Footer from '../Footer'
 
 const QuestionnaireBody = ({pageName}) => {
     const [diabetes, setDiabetes] = useState(null);

@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity, TextInput, Modal, KeyboardAvoidingView, Platform, ScrollView, useWindowDimensions } from 'react-native';
-import { styles } from '../styles/Styles';
+import { styles } from '../../styles/Styles';
 import { AntDesign } from '@expo/vector-icons';
 import {React, useState} from 'react';
 import validator from 'validator';

@@ -1,6 +1,6 @@
 import { View, Text, TouchableOpacity } from 'react-native'
 import {React, useRef, useState} from 'react';
-import GetStartedBottomSheet from './modals/GetStartedBottomSheet';
+import GetStartedBottomSheet from '../modals/GetStartedBottomSheet';
 
 export default function SkipButton({onPress}) {
   const [isRegModalVisible, setIsRegModalVisible] = useState(false);

@@ -1,7 +1,7 @@
 import { View, Text, TouchableOpacity, useWindowDimensions, Modal } from 'react-native'
 import { React, useRef, useState } from 'react'
-import { styles } from '../styles/Styles';
-import GetStartedBottomSheet from './modals/GetStartedBottomSheet';
+import { styles } from '../../styles/Styles';
+import GetStartedBottomSheet from '../modals/GetStartedBottomSheet';
 
 export default function GetStarted({ onPress }) {
   const width = useWindowDimensions().width;

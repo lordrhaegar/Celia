@@ -2,10 +2,10 @@ import { View, Text, Modal, TouchableOpacity, StyleSheet } from 'react-native'
 import React from 'react'
 import { BottomSheetModal } from '@gorhom/bottom-sheet'
 import { styles } from '../../styles/Styles'
-import RegisterButton from '../RegisterButton'
-import LogInButton from '../LogInButton'
-import SignupForm from '../SignupForm'
-import SigninForm from '../SigninForm'
+import RegisterButton from '../buttons/RegisterButton'
+import LogInButton from '../buttons/LogInButton'
+import SignupForm from '../forms/SignupForm'
+import SigninForm from '../forms/SigninForm'
 
 const GetStartedBottomSheet = ({ modalRef, snapPoints, onPress, openRegModal, openLoginModal, isRegModalVisible, closeRegModal, isLoginModalVisible, closeLoginModal }) => {
   return (
