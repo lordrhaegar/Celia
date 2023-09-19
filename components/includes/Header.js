@@ -13,7 +13,8 @@ const Header = ({pageName}) => {
         setIsNoticeModal(false);
     }
     return (
-        <View className="flex-row px-5 items-center justify-between">
+        <View className="flex-row px-5 items-center justify-between"
+        >
             <Text style={styles.title} className="text-black font-medium">{ pageName === 'Diagnosis' ? 'Headache' :'New Diagnosis'}</Text>
             <AntDesign
                 onPress={() => {

@@ -7,7 +7,9 @@ import Progressbars from '../Progressbars'
 const Diagnosisbody = () => {
     
     return (
-        <View>
+        <View
+        className="w-full px-5"
+        >
             <View
                 style={styles.summaryBody}
             >
@@ -46,6 +48,9 @@ const Diagnosisbody = () => {
                         style={styles.managedHome}
                     >Can usually be managed at home</Text>
                     <Progressbars percentage={86}/>
+                    <View 
+                    className="w-full items-center"
+                    >
                     <TouchableOpacity
                     style={styles.someoneElseButton}
                     >
@@ -53,7 +58,9 @@ const Diagnosisbody = () => {
                         style={styles.someoneElseText}
                         >Tell me more</Text>
                     </TouchableOpacity>
+                    </View>
                 </View> 
+                <View style={styles.diagnosisSpaceBox}></View>
                 <View
                 className="w-full"
                 >
@@ -64,6 +71,9 @@ const Diagnosisbody = () => {
                         style={styles.managedHome}
                     >Can usually be managed at home</Text>
                     <Progressbars percentage={56}/>
+                    <View 
+                    className="w-full items-center"
+                    >
                     <TouchableOpacity
                     style={styles.someoneElseButton}
                     >
@@ -71,7 +81,9 @@ const Diagnosisbody = () => {
                         style={styles.someoneElseText}
                         >Tell me more</Text>
                     </TouchableOpacity>
+                    </View>
                 </View> 
+                <View style={styles.diagnosisSpaceBox}></View>
                 <View
                 className="w-full"
                 >
@@ -82,6 +94,9 @@ const Diagnosisbody = () => {
                         style={styles.managedHome}
                     >Can usually be managed at home</Text>
                     <Progressbars percentage={25}/>
+                    <View 
+                    className="w-full items-center"
+                    >
                     <TouchableOpacity
                     style={styles.someoneElseButton}
                     >
@@ -89,7 +104,9 @@ const Diagnosisbody = () => {
                         style={styles.someoneElseText}
                         >Tell me more</Text>
                     </TouchableOpacity>
-                </View> 
+                    </View>
+                </View>
+                <View style={styles.diagnosisSpaceBox}></View> 
             </View>
         </View>
     )

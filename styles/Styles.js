@@ -10,6 +10,7 @@ export const styles = StyleSheet.create({
         backgroundColor: '#FDFDFD'
     },
     scrollView: {
+        width: '100%',
         backgroundColor: '#FDFDFD',
         paddingVertical: 20
     },
@@ -572,7 +573,7 @@ export const styles = StyleSheet.create({
     },
     summaryBody: {
         width: '100%',
-        padding: 20,
+        paddingVertical: 20,
         justifyContent: 'center',
         alignItems: 'flex-start',
         gap: 12,
@@ -601,7 +602,7 @@ export const styles = StyleSheet.create({
     },
     causesBody: {
         width: '100%',
-        padding: 20,
+        paddingVertical: 20,
         justifyContent: 'flex-end',
         alignItems: 'flex-start',
         gap: 12,
@@ -647,5 +648,21 @@ export const styles = StyleSheet.create({
         fontFamily: 'Gilroy',
         fontWeight: '600',
         lineHeight: 28,
-    }
+    },
+    diagnosisSafeArea: {
+        paddingVertical: 20,
+        backgroundColor: '#FDFDFD',
+        alignItems: 'stretch'
+    },
+    continueButtonView: { 
+        position: 'absolute', 
+        width: '100%', 
+        alignItems: 'center', 
+        bottom: 10, 
+        zIndex: 1,
+        paddingHorizontal: 20
+    },
+    diagnosisSpaceBox: {
+        height: 52
+    },
 })
