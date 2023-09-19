@@ -1,7 +1,6 @@
 import * as SplashScreen from 'expo-splash-screen';
 import { NavigationContainer } from '@react-navigation/native';
 import BaseWrapper from './screens/BaseWrapper';
-import HomeScreen from './screens/HomeScreen';
 import { createStackNavigator } from '@react-navigation/stack';
 import AppNavigator from './navigator/AppNavigator';
 import NewDiagnosis from './screens/NewDiagnosis';

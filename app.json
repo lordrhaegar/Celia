@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Celia",
-    "slug": "Celia",
+    "slug": "celia",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -29,14 +29,15 @@
     },
     "extra": {
       "eas": {
-        "projectId": "6392aee9-8e9d-4185-ae78-920a9e2bf002"
+        "projectId": "ad8df38e-5c46-4990-abcb-4a2d770a967f"
       }
     },
     "runtimeVersion": {
       "policy": "appVersion"
     },
     "updates": {
-      "url": "https://u.expo.dev/6392aee9-8e9d-4185-ae78-920a9e2bf002"
-    }
+      "url": "https://u.expo.dev/ad8df38e-5c46-4990-abcb-4a2d770a967f"
+    },
+    "owner": "aimovement"
   }
 }
