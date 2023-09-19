@@ -35,4 +35,4 @@ jobs:
         run: npm install
 
       - name: Publish update
-        run: eas update --platform android --branch preview --non-interactive --message "Updated Production (main) Branch"
+        run: eas update --platform android --branch preview --non-interactive --message "Updated Preview Branch"

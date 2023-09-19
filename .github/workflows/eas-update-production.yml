@@ -37,4 +37,4 @@ jobs:
       - name: Create preview
         uses: expo/expo-github-action/preview@v8
         with:
-          command: eas update --platform android --branch production --non-interactive --message "Updated Preview Branch"
+          command: eas update --platform android --branch production --non-interactive --message "Updated Production (main) Branch"
