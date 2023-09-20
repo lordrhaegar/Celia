@@ -14,6 +14,11 @@ export const styles = StyleSheet.create({
         backgroundColor: '#FDFDFD',
         paddingVertical: 20
     },
+    backText: {
+        fontFamily: 'Gilroy-M',
+        fontSize: 14,
+        fontWeight: 600
+    },
     button: {
         borderWidth: 0,
         borderRadius: 500,
@@ -654,15 +659,86 @@ export const styles = StyleSheet.create({
         backgroundColor: '#FDFDFD',
         alignItems: 'stretch'
     },
-    continueButtonView: { 
-        position: 'absolute', 
-        width: '100%', 
-        alignItems: 'center', 
-        bottom: 10, 
+    continueButtonView: {
+        position: 'absolute',
+        width: '100%',
+        alignItems: 'center',
+        bottom: 10,
         zIndex: 1,
         paddingHorizontal: 20
     },
     diagnosisSpaceBox: {
         height: 52
     },
+    diagnosisSymptomsBody: {
+        width: '100%',
+        padding: 20,
+        justifyContent: 'flex-end',
+        alignItems: 'flex-start',
+        gap: 12,
+        display: 'inline-flex'
+    },
+    diagnosisSymptomsBodyH1: {
+        color: '#27292A',
+        fontSize: 14,
+        fontFamily: 'Gilroy-M',
+        fontWeight: '600',
+        lineHeight: 20,
+    },
+    diagnosisSymptomsBodyParagraph: {
+        color: '#27292A',
+        fontSize: 14,
+        fontFamily: 'Gilroy',
+        fontWeight: '400',
+        lineHeight: 20,
+    },
+    diagnosisDisclaimerBody: {
+        width: '100%',
+        paddingVertical: 32,
+        borderTopWidth: 1,
+        borderColor: '#CED6DA',
+        justifyContent: 'flex-end',
+        alignItems: 'flex-start',
+        gap: 8,
+        display: 'inline-flex'
+    },
+    diagnosisDisclaimerBodyText: {
+        color: '#666B6E',
+        fontSize: 14,
+        fontFamily: 'Gilroy',
+        fontWeight: '400',
+        lineHeight: 20,
+    },
+    diagnosisDisclaimerBodyLinkText: {
+        color: '#0D91DC',
+        fontSize: 14,
+        fontFamily: 'Gilroy',
+        fontWeight: '600',
+        lineHeight: 20,
+    },
+    causesDiagnosisBox: {
+        width: '100%',
+        paddingVertical: 20,
+        borderTopWidth: 1,
+        borderBottomWidth: 1,
+        borderColor: '#CED6DA',
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+        gap: 12,
+        display: 'inline-flex'
+    },
+    causesDiagnosisBoxContentContainer: {
+        width: '100%',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'flex-end',
+        display: 'inline-flex'
+    },
+    causesDiagnosisBoxContentContainerText: {
+        color: '#27292A',
+        fontSize: 14,
+        fontFamily: 'Gilroy',
+        fontWeight: '600',
+        lineHeight: 20,
+    }
 })

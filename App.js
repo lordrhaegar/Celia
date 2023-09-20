@@ -14,6 +14,7 @@ import OtherSymptoms from './screens/OtherSymptoms';
 import SymptomProgress from './screens/SymptomProgress'
 import ThankYou from './screens/ThankYou';
 import Diagnosis from './screens/Diagnosis';
+import PossibleCauseDetails from './screens/PossibleCauseDetails';
 
 const Stack = createStackNavigator();
 
@@ -53,6 +54,7 @@ export default function App() {
       <Stack.Screen name="SymptomProgress" options={{headerShown: false}} component={SymptomProgress} />
       <Stack.Screen name="ThankYou" options={{headerShown: false}} component={ThankYou} />
       <Stack.Screen name="Diagnosis" options={{headerShown: false}} component={Diagnosis} />
+      <Stack.Screen name="PossibleCauseDetails" options={{headerShown: false}} component={PossibleCauseDetails} />
     </Stack.Navigator>
     </NavigationContainer>
   );
