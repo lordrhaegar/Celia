@@ -5,9 +5,11 @@ import { styles } from '../styles/Styles';
 import { ScrollView, Text, TouchableOpacity, View, useWindowDimensions } from 'react-native';
 import Diagnosisbody from '../components/screen body/Diagnosisbody';
 
-const Diagnosis = () => {
+const Diagnosis = ({route}) => {
     const pageName = 'Diagnosis';
     const width = useWindowDimensions().width;
+    const {result} = route.params
+    console.log("The disease Body", result);
     return (
         <SafeAreaView>
             <View
@@ -27,7 +29,7 @@ const Diagnosis = () => {
                 contentContainerStyle={styles.diagnosisSafeArea}
             >
                 <Header pageName={pageName} />
-                <Diagnosisbody />
+                <Diagnosisbody  disease={result}/>
             </ScrollView>
         </SafeAreaView>
     )

@@ -1,9 +1,14 @@
 import { View, Text, TouchableOpacity, Image } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import { styles } from '../../styles/Styles'
 import { logo } from '../../constants/constants'
 
 const ClientTypeBody = () => {
+    const [selectedClientType, setSelectedClientType] = useState('');
+    const clientTypeOptions = [
+        { text: 'Myself', value: 'myself' },
+        { text: 'Someone Else', value: 'someoneelse'}
+    ];
     return (
         <View
             style={styles.privacyBody}
@@ -25,21 +30,18 @@ const ClientTypeBody = () => {
                     style={styles.title}
                 >Who is this diagnosis for?</Text>
             </View>
-
-            <TouchableOpacity
-                style={styles.mySelfButton}
+            {
+                clientTypeOptions.map((clientType, index)=>(
+                    <TouchableOpacity
+                    onPress={()=>setSelectedClientType(clientType.value)}
+                style={selectedClientType === clientType.value ? styles.mySelfButton : styles.someoneElseButton}
             >
                 <Text
-                    style={styles.mySelfText}
-                >Myself</Text>
+                    style={selectedClientType === clientType.value ? styles.mySelfText : styles.someoneElseText}
+                >{clientType.text}</Text>
             </TouchableOpacity>
-            <TouchableOpacity
-                style={styles.someoneElseButton}
-            >
-                <Text
-                    style={styles.someoneElseText}
-                >Someone else</Text>
-            </TouchableOpacity>
+                ))
+            }
         </View>
     )
 }

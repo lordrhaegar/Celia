@@ -13,7 +13,7 @@ const ClientBioBody = () => {
     const [isDateModal, setIsDateModal] = useState(false);
     const [isGenderModal, setIsGenderModal] = useState(false);
     const [date, setDate] = useState('2023/12/03');
-    const [gender, setGender] = useState('');
+    const [selectedGender, setSelectedGender] = useState('');
     const openDateModal = () => {
         setIsDateModal(true);
     }
@@ -26,6 +26,10 @@ const ClientBioBody = () => {
     const closeGenderModal = () => {
         setIsGenderModal(false);
     }
+    const genderOptions = [
+        { text: 'Male', value: 'male', icon: 'male-outline' },
+        { text: 'Female', value: 'female', icon: 'female-outline' }
+    ];
     return (
         <View
             style={styles.privacyBody}
@@ -70,30 +74,23 @@ const ClientBioBody = () => {
                     style={styles.title}
                 >What is your gender?</Text>
                 <View className="flex-row justify-between">
-                    <TouchableOpacity
-                        onPress={() => { setGender('Male') }}
-                        style={styles.genderButton}
+                    {
+                        genderOptions.map((gender, index)=>(
+                            <TouchableOpacity
+                            key={index}
+                        onPress={() => { setSelectedGender(gender.value) }}
+                        style={[styles.genderButton, {borderColor: selectedGender === gender.value ? '#0D91DC' : '#474A4C'}]}
                     >
                         <Text
                             style={styles.buttonText}
-                        >Male</Text>
+                        >{gender.text}</Text>
                         <Ionicons
-                            name='male-outline'
+                            name={gender.icon}
                             size={24}
                         />
                     </TouchableOpacity>
-                    <TouchableOpacity
-                        onPress={() => { setGender('Female') }}
-                        style={styles.genderButton}
-                    >
-                        <Text
-                            style={styles.buttonText}
-                        >Female</Text>
-                        <Ionicons
-                            name='female-outline'
-                            size={24}
-                        />
-                    </TouchableOpacity>
+                        ))
+                    }
                 </View>
                 <TouchableOpacity
                 className="flex-row items-center gap-[12]"

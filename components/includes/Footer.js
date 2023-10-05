@@ -1,19 +1,38 @@
-import { View, Text } from 'react-native'
-import React, { useState } from 'react'
+import { View, Text, ActivityIndicator } from 'react-native'
+import React, { useEffect, useState } from 'react'
 import { styles } from '../../styles/Styles'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { useNavigation } from '@react-navigation/native'
 import { AntDesign } from '@expo/vector-icons'
 import SaveModal from '../modals/SaveModal'
+import axios from 'axios'
 
-const Footer = ({ isChecked, pageName }) => {
+const Footer = ({ isChecked, pageName, symptomList, result}) => {
     const navigator = useNavigation();
     const [isSaveModal, setIsSaveModal] = useState(false);
+    const [diagnosisResult, setDiagnosisResult] = useState([]);
+    const [isLoading, setIsLoading] = useState(false)
+    const userSystoms = symptomList;
     const openSaveModal = () => {
         setIsSaveModal(true);
     }
     const closeSaveModal = () => {
         setIsSaveModal(false);
+    }
+    useEffect(() =>{ 
+       
+    },[])
+    const fetchDiagnosis =  async () => {
+        try {
+            setIsLoading(true)
+            const diagnosisResponse = await axios.post('https://celiabackendtestapis.onrender.com/diagnosis/diagnose', {
+                userSystoms
+            })
+            setIsLoading(false)
+            navigator.navigate('ThankYou', {diagnosisResult: diagnosisResponse.data.diagnosisResult})
+        } catch (error) {
+            console.error("An error", error);
+        }
     }
     return (
         <View style={styles.stepNavigation}>
@@ -45,20 +64,20 @@ const Footer = ({ isChecked, pageName }) => {
                         case 'Questionnaire':
                             navigator.navigate('SymptomQuery')
                             break;
-                        case 'DurationQuestionnaire':
-                            navigator.navigate('Fever')
+                        // case 'DurationQuestionnaire':
+                        //     navigator.navigate('Fever')
+                        //     break;
+                        // case 'Fever':
+                        //     navigator.navigate('OtherSymptoms')
+                        //     break;
+                        case 'SymptomQuery':
+                            fetchDiagnosis()
                             break;
-                        case 'Fever':
-                            navigator.navigate('OtherSymptoms')
-                            break;
-                        case 'OtherSymptoms':
-                            navigator.navigate('SymptomProgress')
-                            break;
-                        case 'SymptomProgress':
-                            navigator.navigate('ThankYou')
-                            break;
+                        // case 'SymptomProgress':
+                        //     navigator.navigate('ThankYou')
+                        //     break;
                         case 'ThankYou':
-                            navigator.navigate('Diagnosis')
+                                navigator.navigate('Diagnosis', {result: result})
                             break;
                         default:
                             break;
@@ -70,7 +89,7 @@ const Footer = ({ isChecked, pageName }) => {
                 <Text
                     style={styles.startText}>
                     {pageName === 'NewDiagnosis' ? 'Start' :
-                        pageName === 'OtherSymptoms' ? 'No, I don\'t' :
+                        pageName === 'SymptomQuery' ? isLoading ? <ActivityIndicator color='white'/> : 'Diagnose' :
                             pageName === 'SymptomProgress' ? 'Finish' :
                                 pageName === 'ThankYou' ? 'Okay, show me' :
                                     'Next'}</Text>

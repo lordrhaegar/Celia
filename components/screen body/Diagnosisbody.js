@@ -5,16 +5,8 @@ import { styles } from '../../styles/Styles'
 import Progressbars from '../Progressbars'
 import { useNavigation } from '@react-navigation/native'
 
-const Diagnosisbody = () => {
+const Diagnosisbody = ({disease}) => {
     const navigator = useNavigation();
-    const openCausesDetailScreen = () => {
-        navigator.navigate('PossibleCauseDetails', { causeText })
-    }
-    const causes = [
-        { causeName: 'Common cold', percentage: '86' },
-        { causeName: 'Viral sinusitis', percentage: '56' },
-        { causeName: 'Common cold', percentage: '25' },
-    ]
     return (
         <View
             className="w-full px-5"
@@ -48,8 +40,9 @@ const Diagnosisbody = () => {
                     style={styles.summaryHeadText}
                 >Possible causes</Text>
                 {
-                    causes.map((cause, index) => (
+                    disease.map((cause, index) => (
                         <View
+                        key={index}
                         className="w-full"
                         >
                             <View
@@ -57,16 +50,16 @@ const Diagnosisbody = () => {
                             >
                                 <Text
                                     style={styles.causesText}
-                                >{index + 1}. {cause.causeName}</Text>
+                                >{index + 1}. {cause.diseaseName}</Text>
                                 <Text
                                     style={styles.managedHome}
                                 >Can usually be managed at home</Text>
-                                <Progressbars percentage={cause.percentage} />
+                                <Progressbars percentage={cause.percentageOcurrance} />
                                 <View
                                     className="w-full items-center"
                                 >
                                     <TouchableOpacity
-                                    onPress={()=>navigator.navigate('PossibleCauseDetails', {cause: cause.causeName,percentage: cause.percentage})}
+                                    onPress={()=>navigator.navigate('PossibleCauseDetails', {cause: cause.diseaseName,percentage: cause.percentageOcurrance})}
                                         style={styles.someoneElseButton}
                                     >
                                         <Text

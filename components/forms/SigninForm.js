@@ -1,19 +1,26 @@
-import { View, Text, TouchableOpacity, TextInput, useWindowDimensions, KeyboardAvoidingView } from 'react-native';
+import { View, Text, TouchableOpacity, TextInput, useWindowDimensions, KeyboardAvoidingView, ActivityIndicator } from 'react-native';
 import { styles } from '../../styles/Styles';
 import { AntDesign } from '@expo/vector-icons';
-import { React, useState } from 'react';
+import { React, useEffect, useState } from 'react';
 import { Modal } from 'react-native';
 import ForgotPassword from './ForgotPassword';
 import InputCode from './InputCode';
 import validator from 'validator';
+import axios from 'axios';
+import { useNavigation } from '@react-navigation/native';
+import { ALERT_TYPE, AlertNotificationRoot, Dialog, Toast } from 'react-native-alert-notification';
 
-const SigninForm = ({ openRegModal, loginModalState, closeLoginModal}) => {
+const SigninForm = ({ openRegModal, closeLoginModal }) => {
     const width = useWindowDimensions().width;
     const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
     const [isPasswordVisible, setIsPasswordVisible] = useState(true);
     const [isForgotModalVisible, setForgotModalVisible] = useState(false);
     const [isCodeModalVisible, setCodeModalVisible] = useState(false);
     const [isValidEmail, setIsvalidEmail] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
+    const navigator = useNavigation();
+    useEffect(()=>{console.log('Here');},[])
     const checkValidEmail = (input) => {
         setIsvalidEmail(validator.isEmail(input));
     }
@@ -32,7 +39,47 @@ const SigninForm = ({ openRegModal, loginModalState, closeLoginModal}) => {
     const togglePasswordVisibility = () => {
         setIsPasswordVisible(!isPasswordVisible);
     };
+    const handleLogin = async () => {
+        try {
+            setIsLoading(true)
+            const response = await fetch('https://celiabackendtestapis.onrender.com/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email, password }),
+            })
+            if (response.status === 200) {
+                Dialog.show({
+                    type: ALERT_TYPE.SUCCESS,
+                    title: 'Login successful',
+                    button: 'Ok',
+                    onPressButton: () => {
+                        closeLoginModal()
+                        Dialog.hide()
+                        navigator.navigate('App')
+                    }
+                })
+            } else if (response.status === 400 || 404) {
+                Dialog.show({
+                    type: ALERT_TYPE.WARNING,
+                    title: 'Email or password invalid',
+                    textBody: "Please input the correct email or password",
+                    button: 'Ok',
+                })
+                console.log('Email or password invalid');
+            } else {
+                console.log('Login failed with status:', response.status);
+            }
+            setIsLoading(false)
+            } 
+            catch (response) {
+                console.error('Error logging in:', response);
+
+            }
+    };
     return (
+        <AlertNotificationRoot>
         <KeyboardAvoidingView behavior={Platform.OS === 'android' ? 'height' : 'padding'}>
             <View style={styles.container}>
                 <View style={styles.avoidKeyboard} className="w-full flex-row items-center">
@@ -43,7 +90,7 @@ const SigninForm = ({ openRegModal, loginModalState, closeLoginModal}) => {
                             name='left'
                             style={{ color: '#0D91DC', fontSize: 13 }}
                         />
-                        <Text style={{ fontFamily: 'Gilroy-M', fontSize: 14, fontWeight: 600 }} className="text-[#0D91DC]">
+                        <Text style={{ fontFamily: 'Gilroy-M', fontSize: 14, fontWeight: '600' }} className="text-[#0D91DC]">
                             Back
                         </Text>
                     </TouchableOpacity>
@@ -54,13 +101,14 @@ const SigninForm = ({ openRegModal, loginModalState, closeLoginModal}) => {
                     </Text>
                 </View>
                 <View style={styles.avoidKeyboard} className="w-full gap-3">
-                <Text style={styles.inputLabel}>Enter your registered email address</Text>
-                <TextInput
-                onChangeText={(text)=>{
-                    checkValidEmail(text);
-                }}
-                keyboardType='email-address'
-                    style={isValidEmail ? styles.input : styles.inputError} />
+                    <Text style={styles.inputLabel}>Enter your registered email addre</Text>
+                    <TextInput
+                        onChangeText={(text) => {
+                            checkValidEmail(text);
+                            setEmail(text)
+                        }}
+                        keyboardType='email-address'
+                        style={isValidEmail ? styles.input : styles.inputError} />
                     {
                         !isValidEmail ? (
                             <Text style={{
@@ -72,10 +120,10 @@ const SigninForm = ({ openRegModal, loginModalState, closeLoginModal}) => {
                                 Please Enter a Valid Email
                             </Text>
                         ) : (
-                            <View/>
+                            <View />
                         )
                     }
-            </View>
+                </View>
                 <View style={styles.avoidKeyboard} className="w-full gap-3">
                     <View style={{ width: 335 }} className="w-full flex-row justify-between">
                         <Text style={styles.inputLabel}>Enter your password</Text>
@@ -93,23 +141,25 @@ const SigninForm = ({ openRegModal, loginModalState, closeLoginModal}) => {
                                 {
                                     isForgotModalVisible ? (
                                         <View style={[{ height: "60%" }, styles.modalContainer]}>
-                                        <ForgotPassword isForgotModalVisible={isForgotModalVisible} openCodeModal={openCodeModal} closeForgotModal={closeForgotModal} />
-                                    </View>
+                                            <ForgotPassword isForgotModalVisible={isForgotModalVisible} openCodeModal={openCodeModal} closeForgotModal={closeForgotModal} />
+                                        </View>
                                     ) : isCodeModalVisible ? (
                                         <View style={[{ flex: 0 }, styles.modalContainer]}>
-                                        <InputCode  closeModal={closeCodeModal} />
-                                    </View>
-                                    ) : (<View/>)
+                                            <InputCode closeModal={closeCodeModal} />
+                                        </View>
+                                    ) : (<View />)
                                 }
-                               
+
                             </View>
                         </Modal>
                     </View>
                     <View className="flex-row items-center">
                         <TextInput
+                            onChangeText={setPassword}
                             secureTextEntry={isPasswordVisible}
                             style={styles.input} />
-                        <TouchableOpacity onPress={togglePasswordVisibility}>
+                        <TouchableOpacity
+                            onPress={togglePasswordVisibility}>
                             <AntDesign
                                 name={isPasswordVisible ? 'eye' : 'eyeo'}
                                 size={24}
@@ -121,12 +171,18 @@ const SigninForm = ({ openRegModal, loginModalState, closeLoginModal}) => {
                 </View>
                 <View style={styles.avoidKeyboard} className="w-full">
                     <TouchableOpacity
-                        style={styles.button}
+                        disabled={isLoading}
+                        onPress={handleLogin}
+                        style={[styles.button, { backgroundColor: isLoading ? '#66B6FF' : '#0D91DC' }]}
                     >
-                        <Text style={styles.buttonText} className="text-[#FFFBFB]">Log in</Text>
+                        {
+                            isLoading ? (<ActivityIndicator color='white'/>) : (
+                                <Text style={styles.buttonText} className="text-[#FFFBFB]">Log in</Text>
+                            )
+                        }
                     </TouchableOpacity>
                 </View>
-                <View style={[styles.avoidKeyboard,{ width: width - 55 }]} className="justify-center flex-row gap-1">
+                <View style={[styles.avoidKeyboard, { width: width - 55 }]} className="justify-center flex-row gap-1">
                     <Text style={styles.inputLabel}>Don't have an account ?</Text>
                     <TouchableOpacity
                         onPress={() => {
@@ -153,6 +209,7 @@ const SigninForm = ({ openRegModal, loginModalState, closeLoginModal}) => {
                 </View>
             </View>
         </KeyboardAvoidingView>
+        </AlertNotificationRoot>
     )
 }
 

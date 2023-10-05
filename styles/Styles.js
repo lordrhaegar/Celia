@@ -406,7 +406,6 @@ export const styles = StyleSheet.create({
         gap: 8,
         display: 'inline-flex',
         borderWidth: 1,
-        borderColor: '#474A4C',
     },
     genderNoticeHeadnig: {
         color: '#0D91DC',

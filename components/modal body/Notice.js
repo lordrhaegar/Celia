@@ -47,33 +47,28 @@ const Notice = ({ pageName, closeNoticeModal }) => {
                                         navigator.pop()
                                     }
                                     break;
-                                case 'DurationQuestionnaire':
+                                // case 'DurationQuestionnaire':
+                                //     for (let i = 0; i < 6; i++) {
+                                //         navigator.pop()
+                                //     }
+                                //     break;
+                                // case 'Fever':
+                                //     for (let i = 0; i < 7; i++) {
+                                //         navigator.pop()
+                                //     }
+                                //     break;
+                                // case 'SymptomProgress':
+                                //     for (let i = 0; i < 6; i++) {
+                                //         navigator.pop()
+                                //     }
+                                //     break;
+                                case 'ThankYou':
                                     for (let i = 0; i < 6; i++) {
                                         navigator.pop()
                                     }
                                     break;
-                                case 'Fever':
-                                    for (let i = 0; i < 7; i++) {
-                                        navigator.pop()
-                                    }
-                                    break;
-                                case 'OtherSymptoms':
-                                    for (let i = 0; i < 8; i++) {
-                                        navigator.pop()
-                                    }
-                                    break;
-                                case 'SymptomProgress':
-                                    for (let i = 0; i < 9; i++) {
-                                        navigator.pop()
-                                    }
-                                    break;
-                                case 'ThankYou':
-                                    for (let i = 0; i < 10; i++) {
-                                        navigator.pop()
-                                    }
-                                    break;
                                 case 'Diagnosis':
-                                    for (let i = 0; i < 11; i++) {
+                                    for (let i = 0; i < 7; i++) {
                                         navigator.pop()
                                     }
                                     break;

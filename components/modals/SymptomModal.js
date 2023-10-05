@@ -3,7 +3,7 @@ import React from 'react'
 import { styles } from '../../styles/Styles'
 import SymptomSearchBody from '../modal body/SymptomSearchBody'
 
-const SymptomModal = ({isSymptomModal, closeSymptomModal, symptom, setSymptom, openSelectSymptomModal}) => {
+const SymptomModal = ({isSymptomModal, closeSymptomModal, symptom, setSymptom, addSymptomToList, setPageName /*openSelectSymptomModal*/}) => {
   return (
     <Modal
       visible={isSymptomModal}
@@ -14,8 +14,8 @@ const SymptomModal = ({isSymptomModal, closeSymptomModal, symptom, setSymptom, o
         <TouchableOpacity
           onPress={closeSymptomModal}
           style={[StyleSheet.absoluteFill, { backgroundColor: 'rgba(0, 0, 0, 0.5)' }]} />
-        <View style={styles.modalContainer}>
-          <SymptomSearchBody openSelectSymptomModal={openSelectSymptomModal} symptom={symptom} setSymptom={setSymptom}/>
+        <View style={[styles.modalContainer, {maxHeight: '40%'}]}>
+          <SymptomSearchBody closeSymptomModal={closeSymptomModal} symptom={symptom} setSymptom={setSymptom} addSymptomToList={addSymptomToList}/>
         </View>
       </View>
     </Modal>
