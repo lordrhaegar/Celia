@@ -6,7 +6,8 @@ import Footer from '../components/includes/Footer'
 import ClientTypeBody from '../components/screen body/ClientTypeBody'
 import { styles } from '../styles/Styles'
 
-const ClientTypeScreen = () => {
+const ClientTypeScreen = ({route}) => {
+    const {userDetails} = route.params
     const height = useWindowDimensions().height
     const pageName = 'ClientType';
     const isChecked = true
@@ -15,7 +16,7 @@ const ClientTypeScreen = () => {
 
             <Header pageName={pageName} />
             <ClientTypeBody />
-            <Footer pageName={pageName} isChecked={isChecked} />
+            <Footer pageName={pageName} isChecked={isChecked} userDetails={userDetails}/>
         </SafeAreaView>
     )
 }

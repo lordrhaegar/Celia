@@ -8,9 +8,10 @@ import InputCode from './InputCode';
 import validator from 'validator';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
-import { ALERT_TYPE, AlertNotificationRoot, Dialog, Toast } from 'react-native-alert-notification';
+import { ALERT_TYPE, AlertNotificationRoot, Toast, Dialog } from 'react-native-alert-notification';
+import { ScrollView } from 'react-native-gesture-handler';
 
-const SigninForm = ({ openRegModal, closeLoginModal }) => {
+const SigninForm = ({ openRegModal, closeLoginModal, setLoginStatus }) => {
     const width = useWindowDimensions().width;
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -20,7 +21,6 @@ const SigninForm = ({ openRegModal, closeLoginModal }) => {
     const [isValidEmail, setIsvalidEmail] = useState(true);
     const [isLoading, setIsLoading] = useState(false);
     const navigator = useNavigation();
-    useEffect(()=>{console.log('Here');},[])
     const checkValidEmail = (input) => {
         setIsvalidEmail(validator.isEmail(input));
     }
@@ -42,46 +42,46 @@ const SigninForm = ({ openRegModal, closeLoginModal }) => {
     const handleLogin = async () => {
         try {
             setIsLoading(true)
-            const response = await fetch('https://celiabackendtestapis.onrender.com/auth/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ email, password }),
+            // const response = await fetch('https://celiabackendtestapis.onrender.com/auth/login', {
+            //     method: 'POST',
+            //     headers: {
+            //         'Content-Type': 'application/json',
+            //     },
+            //     body: JSON.stringify({ email, password }),
+            // })
+            const response = await axios.post('https://celiabackendtestapis.onrender.com/auth/login', {
+                email, 
+                password
             })
             if (response.status === 200) {
-                Dialog.show({
-                    type: ALERT_TYPE.SUCCESS,
-                    title: 'Login successful',
-                    button: 'Ok',
-                    onPressButton: () => {
-                        closeLoginModal()
-                        Dialog.hide()
-                        navigator.navigate('App')
-                    }
-                })
-            } else if (response.status === 400 || 404) {
-                Dialog.show({
-                    type: ALERT_TYPE.WARNING,
-                    title: 'Email or password invalid',
-                    textBody: "Please input the correct email or password",
-                    button: 'Ok',
-                })
-                console.log('Email or password invalid');
-            } else {
-                console.log('Login failed with status:', response.status);
+                setLoginStatus(response.status)
+                setTimeout(() => {
+                setLoginStatus(0)
+                    closeLoginModal()
+                    navigator.navigate('App', {userDetails: response.data})
+                }, 3000);
+                console.log("success");
             }
             setIsLoading(false)
             } 
-            catch (response) {
-                console.error('Error logging in:', response);
-
+            catch (error) {
+                if (error.response.status === 400 || 404) {
+                    setLoginStatus(error.response.status)
+                    setTimeout(() => {
+                        setLoginStatus(0)
+                        }, 3000);
+                    console.log('Email or password invalid');
+                }
+                setIsLoading(false)
+                // console.error('Error logging in:', error.response.status);
             }
     };
     return (
         <AlertNotificationRoot>
-        <KeyboardAvoidingView behavior={Platform.OS === 'android' ? 'height' : 'padding'}>
-            <View style={styles.container}>
+            <ScrollView 
+            showsVerticalScrollIndicator={false}
+            bounces={false}
+            contentContainerStyle={styles.container}>
                 <View style={styles.avoidKeyboard} className="w-full flex-row items-center">
                     <TouchableOpacity
                         onPress={closeLoginModal}
@@ -101,7 +101,7 @@ const SigninForm = ({ openRegModal, closeLoginModal }) => {
                     </Text>
                 </View>
                 <View style={styles.avoidKeyboard} className="w-full gap-3">
-                    <Text style={styles.inputLabel}>Enter your registered email addre</Text>
+                    <Text style={styles.inputLabel}>Enter your registered email address</Text>
                     <TextInput
                         onChangeText={(text) => {
                             checkValidEmail(text);
@@ -186,10 +186,7 @@ const SigninForm = ({ openRegModal, closeLoginModal }) => {
                     <Text style={styles.inputLabel}>Don't have an account ?</Text>
                     <TouchableOpacity
                         onPress={() => {
-                            openRegModal();
-                            setTimeout(() => {
-                                closeLoginModal();
-                            }, 100);
+                            openRegModal()
                         }}
                     >
                         <Text style={styles.inputLabel} className="text-[#0D91DC]">
@@ -207,8 +204,7 @@ const SigninForm = ({ openRegModal, closeLoginModal }) => {
                         <Text style={styles.buttonText} className="text-[#27292A]">Login with<Text style={{ fontWeight: '600', fontSize: 16, fontFamily: 'Gilroy-B' }} > Google</Text></Text>
                     </TouchableOpacity>
                 </View>
-            </View>
-        </KeyboardAvoidingView>
+            </ScrollView>
         </AlertNotificationRoot>
     )
 }

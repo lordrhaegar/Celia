@@ -7,7 +7,7 @@ import DatePickerModal from '../modals/DatePickerModal'
 import { AntDesign, Ionicons, MaterialIcons } from '@expo/vector-icons'
 import GenderModal from '../modals/GenderModal'
 
-const ClientBioBody = () => {
+const ClientBioBody = ({userDetails}) => {
     const height = useWindowDimensions().height;
     const width = useWindowDimensions().width;
     const [isDateModal, setIsDateModal] = useState(false);
@@ -64,7 +64,7 @@ const ClientBioBody = () => {
             />
             <MaterialIcons
                 onPress={openDateModal}
-                style={{ position: 'absolute', top: Platform.OS === 'ios' ? height - 425 : height - 387, right: width - 65 }}
+                style={{ position: 'absolute', top: Platform.OS === 'ios' ? height - 430 : height - 387, right: width - 65 }}
                 size={24}
                 color='#0A74B0'
                 name='today'

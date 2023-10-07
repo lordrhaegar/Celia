@@ -8,7 +8,8 @@ import ClientBioBody from '../components/screen body/ClientBioBody'
 import { styled } from 'nativewind'
 import { styles } from '../styles/Styles'
 
-const ClientBio = () => {
+const ClientBio = ({route}) => {
+    const {userDetails} = route.params
     const height = useWindowDimensions().height
     const pageName = 'ClientBio';
     const isChecked = true;
@@ -18,7 +19,7 @@ const ClientBio = () => {
             style={styles.fullScreen}
             >
             <Header pageName={pageName} />
-            <ClientBioBody />
+            <ClientBioBody userDetails={userDetails}/>
             <Footer pageName={pageName} isChecked={isChecked} />
             </View>
         </SafeAreaView>

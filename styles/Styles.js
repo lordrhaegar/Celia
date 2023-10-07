@@ -7,7 +7,8 @@ export const styles = StyleSheet.create({
     safeArea: {
         flex: 1,
         paddingTop: 20,
-        backgroundColor: '#FDFDFD'
+        backgroundColor: '#FDFDFD',
+        marginBottom: -10
     },
     scrollView: {
         width: '100%',
@@ -67,7 +68,6 @@ export const styles = StyleSheet.create({
         fontFamily: "Gilroy-l"
     },
     container: {
-        display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
         paddingVertical: 20,
@@ -739,5 +739,16 @@ export const styles = StyleSheet.create({
         fontFamily: 'Gilroy',
         fontWeight: '600',
         lineHeight: 20,
+    },
+    toastContainer: {
+        width: '95%',
+        height: 70,
+        margin: 10,
+        position: 'absolute',
+        right: '95%',
+        zIndex: 1,
+        padding: 5,
+        borderRadius: 10,
+        marginTop: Platform.OS === 'ios' ? 50 : 0
     }
 })

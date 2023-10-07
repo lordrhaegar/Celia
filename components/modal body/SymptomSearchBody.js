@@ -1,4 +1,4 @@
-import { View, Text, TextInput, TouchableOpacity, ScrollView } from 'react-native'
+import { View, Text, TextInput, TouchableOpacity, ScrollView, KeyboardAvoidingView, Platform } from 'react-native'
 import React from 'react'
 import { styles } from '../../styles/Styles'
 import { useNavigation } from '@react-navigation/native'

@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity } from 'react-native'
+import { View, Text, TouchableOpacity, Platform } from 'react-native'
 import {React, useRef, useState} from 'react';
 import GetStartedBottomSheet from '../modals/GetStartedBottomSheet';
 
@@ -7,14 +7,16 @@ export default function SkipButton({onPress}) {
   const [isLoginModalVisible, setIsLoginModalVisible] = useState(false);
 
   const openLoginModal = () => {
-    setIsLoginModalVisible(true);
+    setIsLoginModalVisible(prevState => !prevState);
+    setIsRegModalVisible(false)
   };
   const closeLoginModal = () => {
     setIsLoginModalVisible(false);
   };
 
   const openRegModal = () => {
-    setIsRegModalVisible(true);
+    setIsRegModalVisible(prevState => !prevState);
+    setIsLoginModalVisible(false)
   };
   const closeRegModal = () => {
     setIsRegModalVisible(false);
@@ -25,7 +27,11 @@ export default function SkipButton({onPress}) {
     modalRef.current?.present();
   }
   return (
-    <View>
+    <View
+    style={{
+      marginTop: Platform.OS === 'ios' ? 80 : 0
+    }}
+    >
       <TouchableOpacity onPress={
         () => {
           openBottomSheetModal();

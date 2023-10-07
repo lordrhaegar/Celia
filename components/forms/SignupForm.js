@@ -7,7 +7,7 @@ import axios from 'axios';
 import { useNavigation } from '@react-navigation/core';
 import { ALERT_TYPE, Dialog, AlertNotificationRoot } from 'react-native-alert-notification';
 
-const SignupForm = ({ openLoginModal, regModalState, closeRegModal }) => {
+const SignupForm = ({ openLoginModal, closeRegModal, setRegStatus }) => {
     const width = useWindowDimensions().width;
     const [firstname, setFirstName] = useState('');
     const [isFirstNameEmpty, setIsFirstNameEmpty] = useState(false);
@@ -28,49 +28,54 @@ const SignupForm = ({ openLoginModal, regModalState, closeRegModal }) => {
     const handleRegister = async () => {
         try {
             setIsLoading(true)
-            const response = await fetch('https://celiabackendtestapis.onrender.com/auth/register', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ 
-                    firstname, 
-                    lastname, 
-                    email, 
-                    password, 
-                    password_confirmation 
-                }),
+            // const response = await fetch('https://celiabackendtestapis.onrender.com/auth/register', {
+            //     method: 'POST',
+            //     headers: {
+            //         'Content-Type': 'application/json',
+            //     },
+            //     body: JSON.stringify({ 
+            // firstname, 
+            // lastname, 
+            // email, 
+            // password, 
+            // password_confirmation 
+            //     }),
+            // })
+            const response = await axios.post('https://celiabackendtestapis.onrender.com/auth/register', {
+                firstname,
+                lastname,
+                email,
+                password,
+                password_confirmation
             })
             if (response.status === 200) {
-                Dialog.show({
-                    type: ALERT_TYPE.SUCCESS,
-                    title: 'Registration successful',
-                    button: 'Ok'
-                })
-                console.log('Registration successful');
-                navigator.navigate('App');
-            } else if (response.status === 422) {
-                Dialog.show({
-                    type: ALERT_TYPE.DANGER,
-                    title: 'Invalid Password',
-                    textBody: "Password length must be at least 6 characters long",
-                    button: 'Ok',
-                })
-                console.log('Password invalid');
-            } else {
-                console.log('Login failed with status:', response.status);
+                setRegStatus(response.status)
+                setTimeout(() => {
+                    setRegStatus(0)
+                    closeRegModal()
+                    navigator.navigate('App', { userDetails: response.data })
+                }, 3000);
+                console.log("success");
             }
             setIsLoading(false)
-            } 
-            catch (response) {
-                console.error('Error logging in:', response);
-
+        }
+        catch (error) {
+            if (error.response.status === 422) {
+                setRegStatus(error.response.status)
+                setTimeout(() => {
+                    setRegStatus(0)
+                }, 3000);
+                console.log('Email or password invalid');
             }
+            setIsLoading(false)
+        }
     };
     return (
         <AlertNotificationRoot>
-        <KeyboardAvoidingView behavior={Platform.OS === 'android' ? 'height' : 'padding'}>
-            <ScrollView contentContainerStyle={styles.container}>
+            <ScrollView
+                bounces={false}
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={styles.container}>
                 <View style={styles.avoidKeyboard} className="w-full flex-row items-center">
                     <TouchableOpacity
                         onPress={closeRegModal}
@@ -194,7 +199,7 @@ const SignupForm = ({ openLoginModal, regModalState, closeRegModal }) => {
                         }}
                         style={isPasswordEqual ? styles.input : styles.inputError} />
                     {
-                        !isPasswordEqual? (
+                        !isPasswordEqual ? (
                             <Text style={{
                                 color: '#DC0D0D',
                                 fontSize: 15,
@@ -213,8 +218,7 @@ const SignupForm = ({ openLoginModal, regModalState, closeRegModal }) => {
                         onPress={() => {
                             if (firstname !== '') {
                                 if (lastname !== '') {
-                                    if (isValidEmail && email !== '')
-                                    {
+                                    if (isValidEmail && email !== '') {
                                         if (password !== '') {
                                             if (password === password_confirmation) {
                                                 handleRegister()
@@ -227,8 +231,7 @@ const SignupForm = ({ openLoginModal, regModalState, closeRegModal }) => {
                                             setIsPasswordEmpty(true)
                                         }
                                     }
-                                    else
-                                    {
+                                    else {
                                         setIsvalidEmail(false)
                                     }
                                 }
@@ -241,7 +244,7 @@ const SignupForm = ({ openLoginModal, regModalState, closeRegModal }) => {
                             }
                         }}
                         style={styles.button}>
-                        <Text style={styles.buttonText} className="text-[#FFFBFB]">{isLoading?(<ActivityIndicator color='white'/>):'Sign up'}</Text>
+                        <Text style={styles.buttonText} className="text-[#FFFBFB]">{isLoading ? (<ActivityIndicator color='white' />) : 'Sign up'}</Text>
                     </TouchableOpacity>
                 </View>
                 <View style={[{ width: width - 55 }, styles.avoidKeyboard]} className="justify-center flex-row gap-1">
@@ -249,9 +252,6 @@ const SignupForm = ({ openLoginModal, regModalState, closeRegModal }) => {
                     <TouchableOpacity
                         onPress={() => {
                             openLoginModal();
-                            setTimeout(() => {
-                                closeRegModal();
-                            }, 100);
                         }
                         }
                     >
@@ -272,7 +272,6 @@ const SignupForm = ({ openLoginModal, regModalState, closeRegModal }) => {
                     </TouchableOpacity>
                 </View>
             </ScrollView>
-        </KeyboardAvoidingView>
         </AlertNotificationRoot>
     )
 }

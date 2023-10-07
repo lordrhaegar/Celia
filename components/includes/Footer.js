@@ -7,7 +7,7 @@ import { AntDesign } from '@expo/vector-icons'
 import SaveModal from '../modals/SaveModal'
 import axios from 'axios'
 
-const Footer = ({ isChecked, pageName, symptomList, result}) => {
+const Footer = ({ isChecked, pageName, symptomList, result, userDetails}) => {
     const navigator = useNavigation();
     const [isSaveModal, setIsSaveModal] = useState(false);
     const [diagnosisResult, setDiagnosisResult] = useState([]);
@@ -53,10 +53,10 @@ const Footer = ({ isChecked, pageName, symptomList, result}) => {
                 onPress={() => {
                     switch (pageName) {
                         case 'NewDiagnosis':
-                            navigator.navigate('ClientType')
+                            navigator.navigate('ClientType', {userDetails: userDetails})
                             break;
                         case 'ClientType':
-                            navigator.navigate('ClientBio')
+                            navigator.navigate('ClientBio', {userDetails: userDetails})
                             break;
                         case 'ClientBio':
                             openSaveModal()

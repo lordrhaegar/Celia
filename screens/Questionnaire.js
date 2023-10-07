@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, useWindowDimensions } from 'react-native'
+import { View, Text, ScrollView, useWindowDimensions, Platform } from 'react-native'
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Header from '../components/includes/Header'
@@ -11,9 +11,11 @@ const Questionnaire = () => {
   const height = useWindowDimensions().height
   return (
     <SafeAreaView
-      style={styles.safeArea}
+      style={[styles.safeArea, {marginBottom: Platform.OS === 'ios' ? -30 : 0}]}
     >
       <ScrollView
+      showsVerticalScrollIndicator={false}
+      bounces={false}
       >
 
         <Header pageName={pageName} />

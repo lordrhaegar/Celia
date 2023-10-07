@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, useWindowDimensions, TouchableOpacity, Image } from 'react-native'
+import { View, Text, ScrollView, useWindowDimensions, TouchableOpacity, Image, Platform } from 'react-native'
 import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { styles } from '../styles/Styles'
@@ -7,7 +7,8 @@ import { TextInput } from 'react-native-gesture-handler'
 import { sthetoscope } from '../constants/constants'
 import { useNavigation } from '@react-navigation/native'
 
-const HomeScreen = () => {
+const HomeScreen = ({route}) => {
+    const {userDetails} = route.params
     const naviagtor = useNavigation();
     const height = useWindowDimensions().height;
     const width = useWindowDimensions().width;
@@ -25,7 +26,7 @@ const HomeScreen = () => {
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={styles.scrollView}>
                 <View style={{ height: "5%" }} className="flex-row px-5 items-center justify-between">
-                    <Text style={styles.title} className="text-black font-medium">Hi there</Text>
+                    <Text style={styles.title} className="text-black font-medium">{`Hi there ${userDetails.user.firstname}`}</Text>
                     <MaterialIcons
                         name='notifications'
                         size={24}
@@ -61,7 +62,7 @@ const HomeScreen = () => {
                     <View>
                         <TouchableOpacity 
                         onPress={() => {
-                            naviagtor.navigate('NewDiagnosis')
+                            naviagtor.navigate('NewDiagnosis', {userDetails: userDetails})
                         }
                         }
                         style={styles.button}>
@@ -85,7 +86,9 @@ const HomeScreen = () => {
                             style={[styles.input, { width: '100%',borderColor: '#A5ADB1', paddingLeft: 50 }]}
                         />
                         <View
-                            className="ml-[-350]"
+                            style={{
+                                marginLeft: Platform.OS === 'ios' ? -370 : -350
+                            }}
                         >
                             <AntDesign
                                 name='search1'

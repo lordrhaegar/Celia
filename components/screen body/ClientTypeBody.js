@@ -33,6 +33,7 @@ const ClientTypeBody = () => {
             {
                 clientTypeOptions.map((clientType, index)=>(
                     <TouchableOpacity
+                    key={index}
                     onPress={()=>setSelectedClientType(clientType.value)}
                 style={selectedClientType === clientType.value ? styles.mySelfButton : styles.someoneElseButton}
             >

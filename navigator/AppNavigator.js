@@ -6,7 +6,8 @@ import { styles } from '../styles/Styles';
 
 const Tab = createBottomTabNavigator();
 
-const AppNavigator = () => {
+const AppNavigator = ({route}) => {
+    const {userDetails} = route.params
     return (
             <Tab.Navigator
                 screenOptions={({ route }) => ({
@@ -24,7 +25,7 @@ const AppNavigator = () => {
                     },
                 })}
             >
-                <Tab.Screen options={{headerShown: false}} name="Home" component={HomeScreen} />
+                <Tab.Screen options={{headerShown: false}} name="Home" component={HomeScreen} initialParams={{userDetails: userDetails}}/>
             </Tab.Navigator>
     );
 };
