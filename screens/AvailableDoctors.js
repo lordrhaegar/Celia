@@ -52,7 +52,7 @@ const AvailableDoctors = ({ navigation, route }) => {
     return (
         <SafeAreaView>
             <View style={talkToADocStyle.container}>
-                <DocHeader title={"Available doctors"} navigation={navigation} />
+                <DocHeader title={"Available Doctors"} navigation={navigation} />
                 {/* <View style={availableDoctorsModalStyles.showSelectedOptionContainer}>
                     <View style={availableDoctorsModalStyles.selectedOptionContainer}>
                         <Text style={availableDoctorsModalStyles.selectedOption}>{selectedOption}</Text>

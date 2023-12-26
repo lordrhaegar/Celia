@@ -23,7 +23,10 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.vladrhaegar.Celia"
+      "package": "com.vladrhaegar.Celia",
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -43,6 +46,11 @@
           "cameraPermission": "Allow Celia to access your camera"
         }
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "ad8df38e-5c46-4990-abcb-4a2d770a967f"
+      }
+    }
   }
 }
