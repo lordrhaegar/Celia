@@ -6,8 +6,7 @@ import Footer from '../components/includes/Footer'
 import Header from '../components/includes/Header'
 import { styles } from '../styles/Styles'
 
-const NewDiagnosis = ({route}) => {
-    const {userDetails} = route.params
+const NewDiagnosis = () => {
     const height = useWindowDimensions().height
     const [isChecked, setIsChecked] = useState(false)
     const pageName = 'NewDiagnosis'
@@ -16,7 +15,7 @@ const NewDiagnosis = ({route}) => {
             
                 <Header pageName={pageName}/>
                 <PrivacyBody isChecked={isChecked} setIsChecked={setIsChecked}/>
-                <Footer pageName={pageName} isChecked={isChecked} userDetails={userDetails}/>
+                <Footer pageName={pageName} isChecked={isChecked} />
 
         </SafeAreaView>
     )

@@ -1,6 +1,29 @@
 import { Platform, StyleSheet } from "react-native";
+import { height, width } from "../constants/constants";
 
 export const styles = StyleSheet.create({
+    skipButtonViewStyle: {
+        marginTop: Platform.OS === 'ios' ? 80 : 0
+    },
+    skipButtonStyle: {
+        borderColor: '#E4E4E4',
+        borderWidth: 1,
+        borderRadius: 20,
+        width: 69,
+        height: 37,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    skipButtonText: {
+        fontSize: 16,
+        fontWeight: '600',
+        fontFamily: "Gilroy-l",
+        color: '#8E8B8B'
+    },
+    getStarteButtonViewStyle: {
+        position: 'absolute',
+        left: '10%',
+    },
     fullScreen: {
         flex: 1
     },
@@ -27,8 +50,8 @@ export const styles = StyleSheet.create({
         height: 56,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#0D91DC',
-        marginLeft: 5
+        marginLeft: 5,
+        backgroundColor: "#0D91DC"
     },
     buttonRed: {
         borderWidth: 0,
@@ -50,12 +73,14 @@ export const styles = StyleSheet.create({
         borderColor: '#474A4C',
         justifyContent: 'center',
         alignItems: 'center',
-        marginLeft: 5
+        marginLeft: 5,
+        color: "black"
     },
     buttonText: {
         fontFamily: 'Gilroy-M',
         fontWeight: '600',
         fontSize: 16,
+        color: '#FFFBFB'
     },
     title: {
         fontFamily: "Gilroy-M",
@@ -240,7 +265,6 @@ export const styles = StyleSheet.create({
         lineHeight: 20,
     },
     privacyBody: {
-        display: 'flex',
         height: Platform.OS === 'ios' ? '88%' : null,
         flex: Platform.OS === 'android' ? 1 : null,
         paddingHorizontal: 20,
@@ -664,7 +688,8 @@ export const styles = StyleSheet.create({
         alignItems: 'center',
         bottom: 10,
         zIndex: 1,
-        paddingHorizontal: 20
+        paddingHorizontal: 20,
+        gap: 20
     },
     diagnosisSpaceBox: {
         height: 52
@@ -750,5 +775,11 @@ export const styles = StyleSheet.create({
         padding: 5,
         borderRadius: 10,
         marginTop: Platform.OS === 'ios' ? 50 : 0
+    },
+    dropDownText: {
+        color: '#A5ADB1',
+        fontSize: 16,
+        fontFamily: 'Gilroy',
+        fontWeight: '400',
     }
 })

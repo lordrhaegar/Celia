@@ -3,13 +3,12 @@ import React from 'react'
 import { styles } from '../../styles/Styles';
 import ReactNativeModernDatepicker, { getFormatedDate } from 'react-native-modern-datepicker';
 
-const DatePickerModal = ({date, isDateModal, closeDateModal, setDate}) => {
-    const today = new Date();
+const DatePickerModal = ({ date, isDateModal, closeDateModal, setDate }) => {
     const handlechange = (propDate) => {
         setDate(propDate)
     }
-  return (
-    <Modal
+    return (
+        <Modal
             visible={isDateModal}
             animationType='fade'
             transparent={true}
@@ -20,37 +19,37 @@ const DatePickerModal = ({date, isDateModal, closeDateModal, setDate}) => {
                     style={[StyleSheet.absoluteFill, { backgroundColor: 'rgba(0, 0, 0, 0.5)' }]} />
                 <View style={[styles.modalContainer, { height: "60%" }]}>
                     <View
-                    className="border-b-2 h-full w-full flex-col items-center justify-center"
-                    style={{
+                        className="border-b-2 h-full w-full flex-col items-center justify-center"
+                        style={{
 
-                        width: '100%'
-                    }}
+                            width: '100%'
+                        }}
                     >
-                    <ReactNativeModernDatepicker
-                    options={{
-                        mainColor: '#0D91DC',
-                        defaultFont: 'Gilroy',
-                        headerFont: 'Gilroy',
-                        textHeaderFontSize: 16
-                    }}
-                    mode='calendar'
-                    onDateChange={handlechange}
-                    style={{borderRadius: 25, width: '80%'}}
-                    />
-                    <TouchableOpacity
-                    onPress={closeDateModal}
-                    style={styles.button}
-                    >
-                        <Text
-                        className="text-[#FFFBFB]"
-                        style={styles.buttonText}
-                        >Continue</Text>
-                    </TouchableOpacity>
+                        <ReactNativeModernDatepicker
+                            options={{
+                                mainColor: '#0D91DC',
+                                defaultFont: 'Gilroy',
+                                headerFont: 'Gilroy',
+                                textHeaderFontSize: 16
+                            }}
+                            mode='calendar'
+                            onDateChange={handlechange}
+                            style={{ borderRadius: 25, width: '80%' }}
+                        />
+                        <TouchableOpacity
+                            onPress={closeDateModal}
+                            style={styles.button}
+                        >
+                            <Text
+                                className="text-[#FFFBFB]"
+                                style={styles.buttonText}
+                            >Continue</Text>
+                        </TouchableOpacity>
                     </View>
                 </View>
             </View>
         </Modal>
-  )
+    )
 }
 
 export default DatePickerModal

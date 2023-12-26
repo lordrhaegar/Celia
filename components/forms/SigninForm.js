@@ -8,18 +8,26 @@ import InputCode from './InputCode';
 import validator from 'validator';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
-import { ALERT_TYPE, AlertNotificationRoot, Toast, Dialog } from 'react-native-alert-notification';
+import { ALERT_TYPE, AlertNotificationRoot, Dialog } from 'react-native-alert-notification';
 import { ScrollView } from 'react-native-gesture-handler';
+import { useDispatch, useSelector } from 'react-redux';
+import CreateNewPassword from './CreateNewPassword';
+import { setUserDetails, setUserToken } from '../../features/authSlice';
+import { setUserToStorage } from '../../constants/constants';
+import Toast from 'react-native-toast-message';
 
-const SigninForm = ({ openRegModal, closeLoginModal, setLoginStatus }) => {
+const SigninForm = ({ openRegModal, closeLoginModal, setAuthStatus }) => {
     const width = useWindowDimensions().width;
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isPasswordVisible, setIsPasswordVisible] = useState(true);
     const [isForgotModalVisible, setForgotModalVisible] = useState(false);
     const [isCodeModalVisible, setCodeModalVisible] = useState(false);
+    const [isCreatePassVisible, setCreatePassModalVisible] = useState(false);
     const [isValidEmail, setIsvalidEmail] = useState(true);
     const [isLoading, setIsLoading] = useState(false);
+    const { userType } = useSelector((state) => state.auth)
+    const dispatch = useDispatch()
     const navigator = useNavigation();
     const checkValidEmail = (input) => {
         setIsvalidEmail(validator.isEmail(input));
@@ -39,49 +47,41 @@ const SigninForm = ({ openRegModal, closeLoginModal, setLoginStatus }) => {
     const togglePasswordVisibility = () => {
         setIsPasswordVisible(!isPasswordVisible);
     };
+    const openCreatePass = () => {
+        setCreatePassModalVisible(true)
+    }
+    const closeCreatePass = () => {
+        setCreatePassModalVisible(false)
+    }
     const handleLogin = async () => {
-        try {
-            setIsLoading(true)
-            // const response = await fetch('https://celiabackendtestapis.onrender.com/auth/login', {
-            //     method: 'POST',
-            //     headers: {
-            //         'Content-Type': 'application/json',
-            //     },
-            //     body: JSON.stringify({ email, password }),
-            // })
-            const response = await axios.post('https://celiabackendtestapis.onrender.com/auth/login', {
-                email, 
-                password
-            })
-            if (response.status === 200) {
-                setLoginStatus(response.status)
-                setTimeout(() => {
-                setLoginStatus(0)
-                    closeLoginModal()
-                    navigator.navigate('App', {userDetails: response.data})
-                }, 3000);
-                console.log("success");
-            }
-            setIsLoading(false)
-            } 
-            catch (error) {
-                if (error.response.status === 400 || 404) {
-                    setLoginStatus(error.response.status)
+            try {
+                setIsLoading(true)
+                const response = await axios.post(`https://celiabackendtestapis.onrender.com/${userType === 'Patient' ? 'auth/login':'doctor/login'}`, {
+                    email,
+                    password
+                })
+                if (response.status === 200) {
+                    setUserToStorage(response.data,dispatch)
+                    setAuthStatus(response.data.message, "success")
                     setTimeout(() => {
-                        setLoginStatus(0)
-                        }, 3000);
-                    console.log('Email or password invalid');
+                        closeLoginModal()
+                        navigator.replace('App')
+                    }, 1000);
                 }
+            }
+            catch (error) {
+                setAuthStatus(error.response, "error")
+            } finally {
                 setIsLoading(false)
-                // console.error('Error logging in:', error.response.status);
+
             }
     };
     return (
         <AlertNotificationRoot>
-            <ScrollView 
-            showsVerticalScrollIndicator={false}
-            bounces={false}
-            contentContainerStyle={styles.container}>
+            <ScrollView
+                showsVerticalScrollIndicator={false}
+                bounces={false}
+                contentContainerStyle={styles.container}>
                 <View style={styles.avoidKeyboard} className="w-full flex-row items-center">
                     <TouchableOpacity
                         onPress={closeLoginModal}
@@ -90,7 +90,7 @@ const SigninForm = ({ openRegModal, closeLoginModal, setLoginStatus }) => {
                             name='left'
                             style={{ color: '#0D91DC', fontSize: 13 }}
                         />
-                        <Text style={{ fontFamily: 'Gilroy-M', fontSize: 14, fontWeight: '600' }} className="text-[#0D91DC]">
+                        <Text style={{ fontFamily: 'Gilroy-M', fontSize: 14, fontWeight: '600', color: userType === 'Doctor' ? '#7CD1D1' : "#0D91DC" }}>
                             Back
                         </Text>
                     </TouchableOpacity>
@@ -133,22 +133,22 @@ const SigninForm = ({ openRegModal, closeLoginModal, setLoginStatus }) => {
                             <Text style={styles.inputLabel} className="text-[#EA6E6E]">Forgot password?</Text>
                         </TouchableOpacity>
                         <Modal
-                            visible={isForgotModalVisible ? isForgotModalVisible : isCodeModalVisible}
+                            visible={isForgotModalVisible ? isForgotModalVisible : isCodeModalVisible ? isCodeModalVisible : isCreatePassVisible ? isCreatePassVisible : false}
                             animationType='slide'
                             transparent={true}
                         >
                             <View style={styles.modalBackground}>
-                                {
-                                    isForgotModalVisible ? (
-                                        <View style={[{ height: "60%" }, styles.modalContainer]}>
+                                <View style={styles.modalContainer}>
+                                    {
+                                        isForgotModalVisible ? (
                                             <ForgotPassword isForgotModalVisible={isForgotModalVisible} openCodeModal={openCodeModal} closeForgotModal={closeForgotModal} />
-                                        </View>
-                                    ) : isCodeModalVisible ? (
-                                        <View style={[{ flex: 0 }, styles.modalContainer]}>
-                                            <InputCode closeModal={closeCodeModal} />
-                                        </View>
-                                    ) : (<View />)
-                                }
+                                        ) : isCodeModalVisible ? (
+                                            // <CreateNewPassword title={'Create new password'} closeModal={closeCodeModal} />
+                                            <InputCode closeCodeModal={closeCodeModal} openCreatePassModal={openCreatePass} />
+                                        ) : isCreatePassVisible ? (<CreateNewPassword title={'Create new password'} closeModal={closeCreatePass} />) :
+                                            (<View />)
+                                    }
+                                </View>
 
                             </View>
                         </Modal>
@@ -173,10 +173,10 @@ const SigninForm = ({ openRegModal, closeLoginModal, setLoginStatus }) => {
                     <TouchableOpacity
                         disabled={isLoading}
                         onPress={handleLogin}
-                        style={[styles.button, { backgroundColor: isLoading ? '#66B6FF' : '#0D91DC' }]}
+                        style={[styles.button, { backgroundColor: userType === 'Doctor' ? isLoading ? '#66B6FF' : '#7CD1D1' : isLoading ? '#66B6FF' : '#0D91DC' }]}
                     >
                         {
-                            isLoading ? (<ActivityIndicator color='white'/>) : (
+                            isLoading ? (<ActivityIndicator color='white' />) : (
                                 <Text style={styles.buttonText} className="text-[#FFFBFB]">Log in</Text>
                             )
                         }
@@ -189,7 +189,7 @@ const SigninForm = ({ openRegModal, closeLoginModal, setLoginStatus }) => {
                             openRegModal()
                         }}
                     >
-                        <Text style={styles.inputLabel} className="text-[#0D91DC]">
+                        <Text style={[styles.inputLabel, { color: userType === 'Doctor' ? '#7CD1D1' : "#0D91DC" }]}>
                             Sign up here
                         </Text>
                     </TouchableOpacity>
@@ -201,7 +201,7 @@ const SigninForm = ({ openRegModal, closeLoginModal, setLoginStatus }) => {
                 </View>
                 <View style={styles.avoidKeyboard} className="w-full">
                     <TouchableOpacity style={styles.button2}>
-                        <Text style={styles.buttonText} className="text-[#27292A]">Login with<Text style={{ fontWeight: '600', fontSize: 16, fontFamily: 'Gilroy-B' }} > Google</Text></Text>
+                        <Text style={[styles.buttonText, { color: "#27292A" }]}>Login with<Text style={{ fontWeight: '600', fontSize: 16, fontFamily: 'Gilroy-B' }} > Google</Text></Text>
                     </TouchableOpacity>
                 </View>
             </ScrollView>

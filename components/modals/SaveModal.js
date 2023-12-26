@@ -2,23 +2,17 @@ import { View, Text, Modal, TouchableOpacity, StyleSheet } from 'react-native'
 import React from 'react'
 import { styles } from '../../styles/Styles'
 import SaveNotice from '../modal body/SaveNotice'
+import CustomModal from './Modal'
 
-const SaveModal = ({ isSaveModal, closeSaveModal }) => {
+const SaveModal = (props) => {
+  const { isSaveModal, closeSaveModal, date, selectedGender } = props
   return (
-    <Modal
-      visible={isSaveModal}
-      animationType='fade'
-      transparent={true}
-    >
-      <View style={styles.modalBackground}>
-        <TouchableOpacity
-          onPress={closeSaveModal}
-          style={[StyleSheet.absoluteFill, { backgroundColor: 'rgba(0, 0, 0, 0.5)' }]} />
-        <View style={[styles.modalContainer, { height: "40%" }]}>
-          <SaveNotice closeNoticeModal={closeSaveModal} />
-        </View>
-      </View>
-    </Modal>
+    <CustomModal
+    visibility={isSaveModal}
+    closeModal={closeSaveModal}
+    animationType={"fade"}
+    component={<SaveNotice date={date} selectedGender={selectedGender} closeNoticeModal={closeSaveModal}/>}
+    />
   )
 }
 

@@ -2,14 +2,18 @@ import { View, Text, KeyboardAvoidingView, TouchableOpacity, TextInput } from 'r
 import React, { useRef, useState, useEffect } from 'react'
 import { AntDesign } from '@expo/vector-icons';
 import { styles } from '../../styles/Styles';
+import { useSelector } from 'react-redux';
+import FormHeader from '../includes/FormHeader';
+import FormHeaderTitle from '../includes/FormHeaderTitle';
 
-const InputCode = ({ closeModal }) => {
+const InputCode = ({ closeCodeModal, openCreatePassModal }) => {
 
     const inputRefs = Array(4).fill(0).map((_, i) => useRef(null));
     const [isCodeIncorrect, setIsCodeIncorrect] = useState(false);
     const [enteredCode, setEnteredCode] = useState('');
     const [countdown, setCountdown] = useState(180);
     const [isCountdownActive, setIsCountdownActive] = useState(false);
+    const { userType } = useSelector((state) => state.auth)
 
     const resendCode = () => {
         setIsCodeIncorrect(false);
@@ -54,9 +58,10 @@ const InputCode = ({ closeModal }) => {
         }
     };
     const verifyCode = () => {
-        console.log(enteredCode);
         if (enteredCode === '1234') {
-            closeModal();
+            console.log(enteredCode);
+            openCreatePassModal()
+            closeCodeModal()
         } else {
             setIsCodeIncorrect(true);
             startCountdown();
@@ -65,24 +70,8 @@ const InputCode = ({ closeModal }) => {
     return (
         <KeyboardAvoidingView behavior={Platform.OS === 'android' ? 'height' : 'padding'}>
             <View style={styles.container}>
-                <View style={styles.avoidKeyboard} className="w-full flex-row items-center">
-                    <TouchableOpacity
-                        onPress={closeModal}
-                        style={{ gap: 5 }} className="flex-row items-center">
-                        <AntDesign
-                            name='left'
-                            style={{ color: '#0D91DC', fontSize: 13 }}
-                        />
-                        <Text style={{ fontFamily: 'Gilroy-M', fontSize: 14, fontWeight: 600 }} className="text-[#0D91DC]">
-                            Back
-                        </Text>
-                    </TouchableOpacity>
-                </View>
-                <View style={styles.avoidKeyboard} className="w-full">
-                    <Text style={styles.title}>
-                        Input code
-                    </Text>
-                </View>
+                <FormHeader closeModal={closeCodeModal} />
+                <FormHeaderTitle title="Input Code"/>
                 <View style={styles.avoidKeyboard} className="w-full">
                     <Text style={styles.description}>
                         Insert the 4 digit code sent to your email to verify it’s your account.
@@ -147,7 +136,7 @@ const InputCode = ({ closeModal }) => {
                 <View style={styles.avoidKeyboard} className="w-full">
                     <TouchableOpacity
                         onPress={verifyCode}
-                        style={styles.button}
+                        style={[styles.button, { backgroundColor: userType === 'Doctor' ? '#7CD1D1' : "#0D91DC" }]}
                     >
                         <Text style={styles.buttonText} className="text-[#FFFBFB]">Verify code</Text>
                     </TouchableOpacity>
@@ -162,10 +151,10 @@ const InputCode = ({ closeModal }) => {
                                 style={styles.button2}
                                 className="flex-row gap-1"
                             >
-                                <Text style={styles.buttonText} className="text-[#27292A]">Resend code</Text>
+                                <Text style={[styles.buttonText, { color: "#27292A" }]}>Resend code</Text>
                                 {
                                     isCountdownActive ? (
-                                        <Text style={styles.buttonText} className="text-[#DC950D]">{formatCountdown()}`</Text>
+                                        <Text style={[styles.buttonText, { color: "#DC950D" }]}>{formatCountdown()}`</Text>
 
                                     ) : null
                                 }

@@ -1,12 +1,43 @@
-import { View, Text, TouchableOpacity } from 'react-native'
-import React from 'react'
+import { View, Text, TouchableOpacity, ActivityIndicator } from 'react-native'
+import React, { useState } from 'react'
 import { styles } from '../../styles/Styles'
 import { useNavigation } from '@react-navigation/native'
+import axios from 'axios'
+import { apiBaseUrl } from '../../constants/constants'
+import { useSelector } from 'react-redux'
 
-const SaveNotice = ({closeNoticeModal}) => {
+const SaveNotice = (props) => {
+  const {closeNoticeModal, date,selectedGender} = props
+  const {userDetails} = useSelector((state)=>state.auth)
+  const {userToken} = useSelector((state)=>state.auth)
+  const [isLoading, setIsLoading] = useState(false)
   const navigator = useNavigation();
-  const saveData = () => {
-    navigator.navigate('Questionnaire')
+  const saveData = async() => {
+    const payload = {
+      firstname: userDetails.firstname,
+      lastname: userDetails.lastname,
+      gender: selectedGender,
+      date_of_birth: date
+    }
+    setIsLoading(true)
+    try {
+      const savingData = await axios.put(`${apiBaseUrl}/auth/update`, payload,{
+        headers: {
+          Authorization: `Bearer ${userToken}`
+        },
+        withCredentials: true
+      })
+      if (savingData.status === 200 || savingData.status === 201) {
+        console.log(savingData.data);
+        navigator.navigate('Questionnaire')
+      }
+    } catch (error) {
+      console.log(error.response.data);
+    }finally{
+      setIsLoading(false)
+    }
+    // console.log(payload);
+    // console.log(userToken);
   }
   return (
     <View style={styles.noticeCard}>
@@ -21,7 +52,7 @@ const SaveNotice = ({closeNoticeModal}) => {
             saveData()
           }}
           style={styles.button}>
-          <Text style={styles.buttonText} className="text-[#FFFBFB]">Yes, save and continue</Text>
+          <Text style={styles.buttonText} className="text-[#FFFBFB]">{isLoading? <ActivityIndicator size={30}/> : "Yes, save and continue"}</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={()=>{
@@ -29,7 +60,7 @@ const SaveNotice = ({closeNoticeModal}) => {
             navigator.navigate('Questionnaire')
           }}
           style={styles.button2}>
-          <Text style={styles.buttonText}>Don’t save, but continue</Text>
+          <Text style={[styles.buttonText, {color: "black"}]}>Don’t save, but continue</Text>
         </TouchableOpacity>
       </View>
     </View>

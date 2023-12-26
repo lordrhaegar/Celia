@@ -6,12 +6,13 @@ import SymptomQueryBody from '../components/screen body/SymptomQueryBody'
 import { styles } from '../styles/Styles'
 import axios from 'axios'
 
-const SymptomQuery = () => {
+const SymptomQuery = (props) => {
   const pageName = 'SymptomQuery';
   const [symptom, setSymptom] = useState('')
     const [symptomList, setSymptomList] = useState([])
     const [allSymptom, setAllSymptoms] = useState([])
     const [filteredSymptoms, setFilteredSymptoms] = useState([])
+    const [isChecked, setIsChecked] = useState(false)
     const filteredSymptom = () => {
         setFilteredSymptoms(allSymptom.filter(item => item.toLowerCase().includes(symptom.toLowerCase())))
         console.log(filteredSymptoms);
@@ -46,8 +47,8 @@ const SymptomQuery = () => {
     >
 
       <Header pageName={pageName} />
-      <SymptomQueryBody pageName={pageName} symptomList={symptomList} symptom={filteredSymptoms} setSymptom={setSymptom} addSymptomToList={addSymptomToList} removeSymptomFromList={removeSymptomFromList}/>
-      <Footer isChecked={true} pageName={pageName} symptomList={symptomList}/>
+      <SymptomQueryBody setIsChecked={setIsChecked} pageName={pageName} symptomList={symptomList} symptom={filteredSymptoms} setSymptom={setSymptom} addSymptomToList={addSymptomToList} removeSymptomFromList={removeSymptomFromList}/>
+      <Footer isChecked={isChecked} pageName={pageName} symptomList={symptomList}/>
     </SafeAreaView>
   )
 }

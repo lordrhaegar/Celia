@@ -1,33 +1,45 @@
 import { StatusBar } from 'expo-status-bar';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Overlay from '../components/Overlay'
 import OnboardingScreen from './OnboardingScreen';
 import SkipButton from '../components/buttons/SkipButton';
 import GetStarted from '../components/buttons/GetStarted';
-import { useFonts } from 'expo-font';
-import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
-import * as SplashScreen from 'expo-splash-screen';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { View, Text, useWindowDimensions } from 'react-native';
+import { View, Text, useWindowDimensions, ActivityIndicator } from 'react-native';
 import { styles } from '../styles/Styles';
+import { useFonts } from 'expo-font';
+import * as SplashScreen from 'expo-splash-screen'
+import OnboadingButton from '../components/buttons/OnboadingButton';
+import { getUserFromStorage } from '../constants/constants';
+import { useDispatch } from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-SplashScreen.preventAutoHideAsync();
 
-export default function BaseWrapper() {
+export default function BaseWrapper({navigation}) {
     const height = useWindowDimensions().height;
+    const dispatch = useDispatch()
     const [isModalVisible, setIsModalVisible] = useState(false);
+    const [fontLoaded, setFontLoaded] = useState(true);
     const [fontsLoaded, fontError] = useFonts({
         'Gilroy-B': require('../assets/fonts/Gilroy-ExtraBold.otf'),
         'Gilroy-M': require('../assets/fonts/Gilroy-Medium.ttf'),
         'Gilroy-l': require('../assets/fonts/Gilroy-Light.otf'),
         'Gilroy': require('../assets/fonts/Gilroy-Regular.ttf'),
     });
-    const onLayoutRootView = useCallback(async () => {
+    useEffect(() => {
+        SplashScreen.preventAutoHideAsync()
+    }, []);
+    useEffect(()=>{
         if (fontsLoaded || fontError) {
-            await SplashScreen.hideAsync();
+            SplashScreen.hideAsync();
+            getUserFromStorage(navigation,dispatch)
         }
-    }, [fontsLoaded, fontError]);
+    },[fontsLoaded, fontError])
+    // const onLayoutRootView = useCallback(async () => {
+    //     if (fontsLoaded || fontError) {
+    //         await SplashScreen.hideAsync();
+    //     }
+    // }, [fontsLoaded, fontError]);
 
     if (!fontsLoaded && !fontError) {
         return null;
@@ -35,25 +47,24 @@ export default function BaseWrapper() {
     const handleGetStartedPress = () => {
         setIsModalVisible(!isModalVisible);
     };
+
+
     return (
-        <GestureHandlerRootView>
-            <BottomSheetModalProvider>
-                <SafeAreaView onLayout={onLayoutRootView}>
-                    <View style={{ height: height }}>
-                        <View style={{ height: "10%" }} className="flex-row px-5 items-center justify-between">
-                            <Text style={styles.title} className="text-black font-medium">Hi there</Text>
-                            <SkipButton onPress={handleGetStartedPress} />
-                        </View>
-                        <OnboardingScreen />
-                        <GetStarted isModalVisible={isModalVisible} onPress={handleGetStartedPress} />
-                        {
-                            isModalVisible ? (<Overlay  />) : (<View />)
-                        }
-                        <StatusBar style='auto' />
+        <SafeAreaView >
+            {
+                !fontLoaded ? (<ActivityIndicator size={30} />) :
+                (<View style={{ height: height }}>
+                    <View style={{ height: "10%" }} className="flex-row px-5 items-center justify-between">
+                        <Text style={styles.title} className="text-black font-medium">Hi there</Text>
+                        {/* <SkipButton onPress={handleGetStartedPress} /> */}
+                        <OnboadingButton viewStyle={styles.skipButtonViewStyle} buttonStyle={styles.skipButtonStyle} backgroundColor="white" buttonTextStyle={styles.skipButtonText} title="Skip"/>
                     </View>
-                </SafeAreaView>
-            </BottomSheetModalProvider>
-        </GestureHandlerRootView>
+                    <OnboardingScreen />
+                    <GetStarted backgroundColor="#0D91DC" />
+                    <StatusBar style='auto' />
+                </View>)
+            }
+        </SafeAreaView>
     );
 }
 

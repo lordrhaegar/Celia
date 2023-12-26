@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity, useWindowDimensions, Modal, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native'
-import { React, useRef, useState } from 'react'
+import { React, useEffect, useRef, useState } from 'react'
 import { styles } from '../../styles/Styles';
 import GetStartedBottomSheet from '../modals/GetStartedBottomSheet';
 import Toast from '../toasts/Toast';
@@ -8,14 +8,16 @@ import RegisterButton from './RegisterButton';
 import LogInButton from './LogInButton';
 import SignupForm from '../forms/SignupForm';
 import SigninForm from '../forms/SigninForm';
+import Notice from '../modal body/Notice';
 
-export default function GetStarted({ onPress }) {
+export default function GetStarted({ 
+  backgroundColor
+ }) {
   const width = useWindowDimensions().width;
   const height = useWindowDimensions().height;
-  const [isRegModalVisible, setIsRegModalVisible] = useState(false);
-  const [isLoginModalVisible, setIsLoginModalVisible] = useState(false);
   const [loginStatus, setLoginStatus] = useState(0)
   const [regStatus, setRegStatus] = useState(0)
+  const [isOnboardingModal, setIsOnboardingModal] = useState(false)
   const customizedToastOptions = {
     loginSuccess: {loginSuccessText: "Login Successful", loginSuccessColor: "#198754"},
     loginInvalid: {loginInvalidCredentialsText: "Invalid email or password", loginInvalidCredentialsColor: "#DC0D0D"},
@@ -23,37 +25,22 @@ export default function GetStarted({ onPress }) {
     registerPassLength: {registerPassLengthText: "Password length must be above 6 characters", registerPassLengthColor: "#DC0D0D"},
   }
 
-  const openLoginModal = () => {
-    setIsLoginModalVisible(prevState => !prevState);
-    setIsRegModalVisible(false)
-  };
-  const closeLoginModal = () => {
-    setIsLoginModalVisible(false);
-  };
-
-  const openRegModal = () => {
-    setIsRegModalVisible(prevState => !prevState);
-    setIsLoginModalVisible(false)
-  };
-  const closeRegModal = () => {
-    setIsRegModalVisible(false);
-  };
-  const modalRef = useRef(null);
-  const snapPoints = ["35%"];
-  const openBottomSheetModal = () => {
-    modalRef.current?.present();
+  
+  const openOnboardingModal = () => {
+    setIsOnboardingModal(true)
   }
+  const closeOnboardingModal = () => {
+    setIsOnboardingModal(false)
+  }
+  useEffect(()=>{
+    setIsOnboardingModal(false)
+  },[])
   return (
-    <View style={{ position: 'absolute', right: width * 0.1, top: height - 110 }}>
-      <TouchableOpacity onPress={
-        () => {
-          openBottomSheetModal();
-          onPress();
-        }
-      } style={styles.button} className=" bg-[#0D91DC]" activeOpacity={0.6}>
-        <Text style={styles.buttonText} className="text-[#FFFBFB]">Get Started</Text>
+    <View style={[styles.getStarteButtonViewStyle, {bottom:  -20}]}>
+      <TouchableOpacity onPress={openOnboardingModal} style={[styles.button, {backgroundColor: backgroundColor}]} activeOpacity={0.6}>
+        <Text style={styles.buttonText}>Get Started</Text>
       </TouchableOpacity>
-      <GetStartedBottomSheet modalRef={modalRef} snapPoints={snapPoints} onPress={onPress} openRegModal={openRegModal} openLoginModal={openLoginModal} isRegModalVisible={isRegModalVisible} closeRegModal={closeRegModal} isLoginModalVisible={isLoginModalVisible} closeLoginModal={closeLoginModal} />
+      <GetStartedBottomSheet isOnboardingModal={isOnboardingModal} openOnboardingModal={openOnboardingModal} closeOnboardingModal={closeOnboardingModal} />
       </View>
   )
 }

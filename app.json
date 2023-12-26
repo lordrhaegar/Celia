@@ -28,17 +28,21 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "extra": {
-      "eas": {
-        "projectId": "ad8df38e-5c46-4990-abcb-4a2d770a967f"
-      }
-    },
     "runtimeVersion": {
       "policy": "appVersion"
     },
     "updates": {
       "url": "https://u.expo.dev/ad8df38e-5c46-4990-abcb-4a2d770a967f"
     },
-    "owner": "aimovement"
+    "owner": "aimovement",
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "The app accesses your photos to let you share them with your friends.",
+          "cameraPermission": "Allow Celia to access your camera"
+        }
+      ]
+    ]
   }
 }

@@ -6,30 +6,34 @@ import { useNavigation } from '@react-navigation/native'
 import { AntDesign } from '@expo/vector-icons'
 import SaveModal from '../modals/SaveModal'
 import axios from 'axios'
+import { useSelector } from 'react-redux'
 
-const Footer = ({ isChecked, pageName, symptomList, result, userDetails}) => {
+const Footer = (props) => {
+    const { isChecked, pageName, symptomList, result, date, selectedGender } = props
     const navigator = useNavigation();
     const [isSaveModal, setIsSaveModal] = useState(false);
     const [diagnosisResult, setDiagnosisResult] = useState([]);
     const [isLoading, setIsLoading] = useState(false)
     const userSystoms = symptomList;
+    const {userDetails} = useSelector((state)=>state.auth)
+
     const openSaveModal = () => {
         setIsSaveModal(true);
     }
     const closeSaveModal = () => {
         setIsSaveModal(false);
     }
-    useEffect(() =>{ 
-       
-    },[])
-    const fetchDiagnosis =  async () => {
+    useEffect(() => {
+
+    }, [])
+    const fetchDiagnosis = async () => {
         try {
             setIsLoading(true)
             const diagnosisResponse = await axios.post('https://celiabackendtestapis.onrender.com/diagnosis/diagnose', {
                 userSystoms
             })
             setIsLoading(false)
-            navigator.navigate('ThankYou', {diagnosisResult: diagnosisResponse.data.diagnosisResult})
+            navigator.navigate('ThankYou', { diagnosisResult: diagnosisResponse.data.diagnosisResult })
         } catch (error) {
             console.error("An error", error);
         }
@@ -53,10 +57,10 @@ const Footer = ({ isChecked, pageName, symptomList, result, userDetails}) => {
                 onPress={() => {
                     switch (pageName) {
                         case 'NewDiagnosis':
-                            navigator.navigate('ClientType', {userDetails: userDetails})
+                            navigator.navigate('ClientType')
                             break;
                         case 'ClientType':
-                            navigator.navigate('ClientBio', {userDetails: userDetails})
+                            navigator.navigate(userDetails.date_of_birth? 'Questionnaire' : 'ClientBio')
                             break;
                         case 'ClientBio':
                             openSaveModal()
@@ -77,7 +81,7 @@ const Footer = ({ isChecked, pageName, symptomList, result, userDetails}) => {
                         //     navigator.navigate('ThankYou')
                         //     break;
                         case 'ThankYou':
-                                navigator.navigate('Diagnosis', {result: result})
+                            navigator.navigate('Diagnosis', { result: result })
                             break;
                         default:
                             break;
@@ -89,12 +93,13 @@ const Footer = ({ isChecked, pageName, symptomList, result, userDetails}) => {
                 <Text
                     style={styles.startText}>
                     {pageName === 'NewDiagnosis' ? 'Start' :
-                        pageName === 'SymptomQuery' ? isLoading ? <ActivityIndicator color='white'/> : 'Diagnose' :
+                        pageName === 'SymptomQuery' ? isLoading ? <ActivityIndicator color='white' /> : 'Diagnose' :
                             pageName === 'SymptomProgress' ? 'Finish' :
                                 pageName === 'ThankYou' ? 'Okay, show me' :
-                                    'Next'}</Text>
+                                    'Next'}
+                </Text>
             </TouchableOpacity>
-            <SaveModal isSaveModal={isSaveModal} closeSaveModal={closeSaveModal} />
+            <SaveModal date={date} selectedGender={selectedGender} isSaveModal={isSaveModal} closeSaveModal={closeSaveModal} />
         </View>
     )
 }

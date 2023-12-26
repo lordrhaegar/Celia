@@ -1,22 +1,26 @@
-import { View, Text, TouchableOpacity } from 'react-native'
+import { View, Text, TouchableOpacity, Dimensions } from 'react-native'
 import React from 'react'
 import { styled } from 'nativewind'
 import { styles } from '../../styles/Styles'
 import Progressbars from '../Progressbars'
 import { useNavigation } from '@react-navigation/native'
+import { useSelector } from 'react-redux'
+import { getAge } from '../../constants/constants'
 
 const Diagnosisbody = ({disease}) => {
-    const navigator = useNavigation();
+    const {userDetails} = useSelector((state)=>state.auth)
+    const age = getAge(userDetails.date_of_birth) 
+    const {height} = Dimensions.get('window')
     return (
         <View
-            className="w-full px-5"
+            className="w-full mb-10 h-full px-5"
         >
             <View
                 style={styles.summaryBody}
             >
                 <Text
                     style={styles.patientInfoText}
-                >Ebuka, Male, 26 years old</Text>
+                >{`${userDetails.firstname}, ${userDetails.gender}, ${age} years old`}</Text>
                 <Text
                     style={styles.summaryHeadText}
                 >
@@ -55,7 +59,7 @@ const Diagnosisbody = ({disease}) => {
                                     style={styles.managedHome}
                                 >Can usually be managed at home</Text>
                                 <Progressbars percentage={cause.percentageOcurrance} />
-                                <View
+                                {/* <View
                                     className="w-full items-center"
                                 >
                                     <TouchableOpacity
@@ -66,13 +70,13 @@ const Diagnosisbody = ({disease}) => {
                                             style={styles.someoneElseText}
                                         >Tell me more</Text>
                                     </TouchableOpacity>
-                                </View>
+                                </View> */}
                             </View>
                             <View style={styles.diagnosisSpaceBox}></View>
                         </View>
                     ))
                 }
-                <View
+                {/* <View
                     style={styles.diagnosisSymptomsBody}
                 >
                     <Text
@@ -137,7 +141,7 @@ const Diagnosisbody = ({disease}) => {
                             This list includes conditions that Celia has identified as possible causes for your symptoms. This is not an exhaustive list. You might have a condition that is not suggested here. Please consult a doctor <Text onPress={() => { }} style={styles.diagnosisDisclaimerBodyLinkText}>here.</Text>
                         </Text>
                     </View>
-                </View>
+                </View> */}
             </View>
         </View>
     )

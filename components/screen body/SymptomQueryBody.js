@@ -8,10 +8,13 @@ import SymptomModal from '../modals/SymptomModal'
 import SymptomSelectModal from '../modals/SymptomSelectModal'
 import { AntDesign } from '@expo/vector-icons'
 
-const SymptomQueryBody = ({removeSymptomFromList, symptomList, symptom, setSymptom, addSymptomToList}) => {
+const SymptomQueryBody = (props) => {
+    const {removeSymptomFromList, symptomList, symptom, setSymptom, addSymptomToList, setIsChecked} = props
     const [isSymptomModal, setIsSymptomModal] = useState(false);
     const [isSelectSymptomModal, setIsSelectSymptomModal] = useState(false);
-
+    useEffect(()=>{
+        symptomList.length > 0 ? setIsChecked(true) : setIsChecked(false)
+    },[symptomList])
     const openSymptomModal = () => {
         setIsSymptomModal(true);
     }

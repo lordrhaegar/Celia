@@ -1,6 +1,7 @@
 import { View, Text, TouchableOpacity, Platform } from 'react-native'
 import {React, useRef, useState} from 'react';
 import GetStartedBottomSheet from '../modals/GetStartedBottomSheet';
+import { styles } from '../../styles/Styles';
 
 export default function SkipButton({onPress}) {
   const [isRegModalVisible, setIsRegModalVisible] = useState(false);
@@ -37,8 +38,8 @@ export default function SkipButton({onPress}) {
           openBottomSheetModal();
           onPress();
         }
-      } style={{borderColor: '#E4E4E4', borderWidth: 1, borderRadius: 20, width: 69, height:37}} className="text-[#8E8B8B] text-lg justify-center items-center " activeOpacity={0.6}>
-      <Text style={{fontSize: 16, fontWeight: '600', fontFamily: "Gilroy-l"}}>Skip</Text>
+      } style={styles.skipButtonStyle} className="text-[#8E8B8B] text-lg justify-center items-center " activeOpacity={0.6}>
+      <Text style={styles.skipButtonText}>Skip</Text>
       </TouchableOpacity>
       <GetStartedBottomSheet modalRef={modalRef} snapPoints={snapPoints} onPress={onPress} openRegModal={openRegModal} openLoginModal={openLoginModal} isRegModalVisible={isRegModalVisible} closeRegModal={closeRegModal} isLoginModalVisible={isLoginModalVisible} closeLoginModal={closeLoginModal} />
     </View>

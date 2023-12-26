@@ -4,7 +4,8 @@ import { styles } from '../../styles/Styles'
 import { logo } from '../../constants/constants'
 import { CheckBox } from 'react-native-elements'
 
-const QuestionnaireBody = ({pageName}) => {
+const QuestionnaireBody = (props) => {
+    const {setIsChecked} = props
     const [diabetes, setDiabetes] = useState(null);
     const [obese, setObese] = useState(null);
     const [hypertension, sethypertension] = useState(null);
@@ -25,8 +26,10 @@ const QuestionnaireBody = ({pageName}) => {
         sethypertension(value);
       };
       useEffect(()=>{
-        console.log(hypertension);
-      },[hypertension])
+        if (diabetes && obese && hypertension) {
+            setIsChecked(true)
+        }
+      },[diabetes, obese, hypertension])
     return (
         <View
             style={styles.questionnaireBody}

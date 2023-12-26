@@ -1,7 +1,7 @@
 import { View, Text } from 'react-native'
 import React, { useState } from 'react'
-import { styles } from '../styles/Styles'
-import Progressbars from '../components/Progressbars'
+import { styles } from '../../styles/Styles'
+import Progressbars from '../Progressbars'
 import { Entypo } from '@expo/vector-icons'
 
 const PossibleCauseDetailsBody = ({ percentage }) => {
@@ -11,16 +11,6 @@ const PossibleCauseDetailsBody = ({ percentage }) => {
         { label: "Diagnosis", arrowState: true },
         { label: "Treatment", arrowState: true },
         { label: "Prevention", arrowState: true },
-        { label: "Prognosis", arrowState: true },
-        { label: "Prognosis", arrowState: true },
-        { label: "Prognosis", arrowState: true },
-        { label: "Prognosis", arrowState: true },
-        { label: "Prognosis", arrowState: true },
-        { label: "Prognosis", arrowState: true },
-        { label: "Prognosis", arrowState: true },
-        { label: "Prognosis", arrowState: true },
-        { label: "Prognosis", arrowState: true },
-        { label: "Prognosis", arrowState: true },
         { label: "Prognosis", arrowState: true },
 
       ]);
