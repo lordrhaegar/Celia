@@ -9,7 +9,7 @@
     "splash": {
       "image": "./assets/LogoBig.png",
       "resizeMode": "contain",
-      "backgroundColor": "#000000"
+      "backgroundColor": "#ffffff"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -20,7 +20,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/LogoBig.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.vladrhaegar.Celia",

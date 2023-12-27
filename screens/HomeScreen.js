@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, useWindowDimensions, TouchableOpacity, Image, Platform } from 'react-native'
+import { View, Text, ScrollView, useWindowDimensions, TouchableOpacity, Image, Platform, Dimensions } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { styles } from '../styles/Styles'
@@ -11,8 +11,7 @@ import { CommonActions } from '@react-navigation/native'
 const HomeScreen = ({ route }) => {
     const { userType } = useSelector((state) => state.auth)
     const navigator = useNavigation();
-    const height = useWindowDimensions().height;
-    const width = useWindowDimensions().width;
+    const {height, width} = Dimensions.get('window')
     const [isAlertArrowUp, setIsAlertArrowUp] = useState(true);
     const [isDiagnosisArrowUp, setIsDiagnosisAlertArrowUp] = useState(true)
     const [listing, setListing] = useState([])
@@ -129,7 +128,7 @@ const HomeScreen = ({ route }) => {
                             <View>
                                 <TouchableOpacity
                                     onPress={() => {
-                                        navigator.navigate('AiHomeScreen')
+                                        navigator.navigate('NewDiagnosis')
                                     }
                                     }
                                     style={styles.button}>
