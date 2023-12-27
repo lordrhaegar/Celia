@@ -184,9 +184,7 @@ const HomeScreen = ({ route }) => {
                             style={[styles.input, { width: '100%', borderColor: '#A5ADB1', paddingLeft: 50 }]}
                         />
                         <View
-                            style={{
-                                marginLeft: Platform.OS === 'ios' ? -370 : -350
-                            }}
+                            style={{position: 'absolute', left: "5%"}}
                         >
                             <AntDesign
                                 name='search1'

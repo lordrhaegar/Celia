@@ -15,7 +15,7 @@ import { MotiImage, MotiView } from 'moti'
 import { Easing } from 'react-native-reanimated'
 
 const HeartFailureQuestionScreen = ({ route, navigation }) => {
-    const { width, height } = Dimensions.get('screen')
+    const { width, height } = Dimensions.get('window')
     const [isLoading, setIsLoading] = useState(false)
     const [questionNo, setQuestionNo] = useState(0);
     const { userDetails } = useSelector((state) => state.auth)
@@ -147,7 +147,7 @@ const HeartFailureQuestionScreen = ({ route, navigation }) => {
             style={{
                 height: height,
                 justifyContent: 'flex-end',
-                paddingVertical: 30,
+                paddingVertical: 10,
                 backgroundColor: "#E5F6F6"
             }}
         >

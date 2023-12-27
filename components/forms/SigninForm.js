@@ -127,11 +127,11 @@ const SigninForm = ({ openRegModal, closeLoginModal, setAuthStatus }) => {
                 <View style={styles.avoidKeyboard} className="w-full gap-3">
                     <View style={{ width: 335 }} className="w-full flex-row justify-between">
                         <Text style={styles.inputLabel}>Enter your password</Text>
-                        <TouchableOpacity
+                        {/* <TouchableOpacity
                             onPress={openForgotModal}
                         >
                             <Text style={styles.inputLabel} className="text-[#EA6E6E]">Forgot password?</Text>
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
                         <Modal
                             visible={isForgotModalVisible ? isForgotModalVisible : isCodeModalVisible ? isCodeModalVisible : isCreatePassVisible ? isCreatePassVisible : false}
                             animationType='slide'
@@ -153,18 +153,19 @@ const SigninForm = ({ openRegModal, closeLoginModal, setAuthStatus }) => {
                             </View>
                         </Modal>
                     </View>
-                    <View className="flex-row items-center">
+                    <View className="flex-row items-center ">
                         <TextInput
                             onChangeText={setPassword}
                             secureTextEntry={isPasswordVisible}
                             style={styles.input} />
                         <TouchableOpacity
+                        className="h-full justify-center items-center"
+                                style={{ position: 'absolute', right: '5%' }}
                             onPress={togglePasswordVisibility}>
                             <AntDesign
                                 name={isPasswordVisible ? 'eye' : 'eyeo'}
                                 size={24}
                                 color="gray"
-                                style={{ marginLeft: -40 }}
                             />
                         </TouchableOpacity>
                     </View>
@@ -194,7 +195,7 @@ const SigninForm = ({ openRegModal, closeLoginModal, setAuthStatus }) => {
                         </Text>
                     </TouchableOpacity>
                 </View>
-                <View style={[{ width: width - 55 }, styles.avoidKeyboard]} className="flex-row items-center justify-center gap-5">
+                {/* <View style={[{ width: width - 55 }, styles.avoidKeyboard]} className="flex-row items-center justify-center gap-5">
                     <View style={{ height: 1, width: 90 }} className="border-b-2 border-[#CED6DA]"></View>
                     <Text>Or</Text>
                     <View style={{ height: 1, width: 90 }} className="border-b-2 border-[#CED6DA]"></View>
@@ -203,7 +204,7 @@ const SigninForm = ({ openRegModal, closeLoginModal, setAuthStatus }) => {
                     <TouchableOpacity style={styles.button2}>
                         <Text style={[styles.buttonText, { color: "#27292A" }]}>Login with<Text style={{ fontWeight: '600', fontSize: 16, fontFamily: 'Gilroy-B' }} > Google</Text></Text>
                     </TouchableOpacity>
-                </View>
+                </View> */}
             </ScrollView>
         </AlertNotificationRoot>
     )

@@ -54,7 +54,7 @@ const GetStartedBottomSheet = ({
     error: (props) => (
       <ErrorToast
         {...props}
-        style={{backgroundColor: "#DC0D0D" }}
+        style={{backgroundColor: "#DC0D0D", flexWrap: 'wrap' }}
         contentContainerStyle={{ paddingHorizontal: 15 }}
         text1Style={{
           fontSize: 17,
@@ -141,6 +141,7 @@ const GetStartedBottomSheet = ({
                   <TouchableOpacity
                     onPress={closeRegModal}
                     style={[StyleSheet.absoluteFill, { backgroundColor: 'rgba(0, 0, 0, 0.5)' }]} />
+                    <Toast config={toastConfig}/>
                   <View style={[styles.modalContainer, { height: "80%" }]}>
                     <SignupForm
                       openLoginModal={openLoginModal}

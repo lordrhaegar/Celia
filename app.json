@@ -4,12 +4,12 @@
     "slug": "celia",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/LogoBig.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/LogoBig.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#000000"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -34,9 +34,6 @@
     "runtimeVersion": {
       "policy": "appVersion"
     },
-    "updates": {
-      "url": "https://u.expo.dev/ad8df38e-5c46-4990-abcb-4a2d770a967f"
-    },
     "owner": "aimovement",
     "plugins": [
       [
@@ -51,6 +48,9 @@
       "eas": {
         "projectId": "ad8df38e-5c46-4990-abcb-4a2d770a967f"
       }
+    },
+    "updates": {
+      "url": "https://u.expo.dev/ad8df38e-5c46-4990-abcb-4a2d770a967f"
     }
   }
 }

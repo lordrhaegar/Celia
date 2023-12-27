@@ -133,7 +133,7 @@ const SignupForm = ({ openLoginModal, closeRegModal, setAuthStatus }) => {
             }
         }
         catch (error) {
-            setAuthStatus(error.response.data.message, "error")
+            setAuthStatus(error.response.data.error, "error")
         } finally {
             setIsLoading(false)
 
@@ -409,7 +409,7 @@ const SignupForm = ({ openLoginModal, closeRegModal, setAuthStatus }) => {
                     </TouchableOpacity>
 
                 </View>
-                <View style={[{ width: width - 55 }, styles.avoidKeyboard]} className="flex-row items-center justify-center gap-5">
+                {/* <View style={[{ width: width - 55 }, styles.avoidKeyboard]} className="flex-row items-center justify-center gap-5">
                     <View style={{ height: 1, width: 90 }} className="border-b-2 border-[#CED6DA]"></View>
                     <Text>Or</Text>
                     <View style={{ height: 1, width: 90 }} className="border-b-2 border-[#CED6DA]"></View>
@@ -424,7 +424,7 @@ const SignupForm = ({ openLoginModal, closeRegModal, setAuthStatus }) => {
                         backgroundColor='white'
                         viewStyle={{ width: "100%" }}
                     />
-                </View>
+                </View> */}
             </ScrollView>
         </AlertNotificationRoot>
     )
