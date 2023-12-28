@@ -15,6 +15,7 @@ import CreateNewPassword from './CreateNewPassword';
 import { setUserDetails, setUserToken } from '../../features/authSlice';
 import { setUserToStorage } from '../../constants/constants';
 import Toast from 'react-native-toast-message';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const SigninForm = ({ openRegModal, closeLoginModal, setAuthStatus }) => {
     const width = useWindowDimensions().width;
@@ -70,13 +71,14 @@ const SigninForm = ({ openRegModal, closeLoginModal, setAuthStatus }) => {
                 }
             }
             catch (error) {
-                setAuthStatus(error.response, "error")
+                setAuthStatus(error.response.data.message, "error")
             } finally {
                 setIsLoading(false)
 
             }
     };
     return (
+        <SafeAreaView>
         <AlertNotificationRoot>
             <ScrollView
                 showsVerticalScrollIndicator={false}
@@ -207,6 +209,7 @@ const SigninForm = ({ openRegModal, closeLoginModal, setAuthStatus }) => {
                 </View> */}
             </ScrollView>
         </AlertNotificationRoot>
+        </SafeAreaView>
     )
 }
 

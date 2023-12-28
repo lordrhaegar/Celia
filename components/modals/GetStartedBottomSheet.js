@@ -100,8 +100,8 @@ const GetStartedBottomSheet = ({
           <TouchableOpacity
             onPress={closeOnboardingModal}
             style={[StyleSheet.absoluteFill, { backgroundColor: 'rgba(0, 0, 0, 0.5)' }]} />
-          <View style={[styles.modalContainer, { height: "30%", paddingVertical: 20 }]}>
-            <View style={{ height: "90%", gap: 20 }} className="flex-col py-2  items-center justify-start">
+          <View style={[styles.modalContainer, { flex: 0, paddingVertical: 20 }]}>
+            <View style={{ gap: 20 }} className="flex-col py-2  items-center justify-start">
               <View>
                 <Text style={styles.title} className="text-[#0D91DC] font-medium">
                   Let’s get you started
