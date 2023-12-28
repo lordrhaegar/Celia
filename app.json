@@ -4,10 +4,10 @@
     "slug": "celia",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/LogoBig.png",
+    "icon": "./assets/images/LogoBig.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/LogoBig.png",
+      "image": "./assets/images/LogoBig.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -20,7 +20,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/LogoBig.png",
+        "foregroundImage": "./assets/images/LogoBig.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.vladrhaegar.Celia",
