@@ -12,7 +12,7 @@ import FormHeader from '../includes/FormHeader';
 import FormHeaderTitle from '../includes/FormHeaderTitle';
 import { docStyles } from '../../styles/doctorRequirementScreenStyles';
 import { Image } from 'react-native';
-import { apiBaseUrl, imageUpload, setUserToStorage, uploadDocument } from '../../constants/constants';
+import { apiBaseUrl, capitalize, imageUpload, setUserToStorage, uploadDocument } from '../../constants/constants';
 import DropDownPicker from 'react-native-dropdown-picker';
 import * as DocumentPicker from "expo-document-picker"
 import * as ImagePicker from "expo-image-picker"
@@ -125,7 +125,7 @@ const SignupForm = ({ openLoginModal, closeRegModal, setAuthStatus }) => {
             })
             if (response.status === 200) {
                 setUserToStorage(response.data,dispatch)
-                setAuthStatus(response.data.message, "success")
+                setAuthStatus(capitalize(response.data.message), "success")
                 setTimeout(() => {
                     closeRegModal()
                     navigator.replace('App')
@@ -133,7 +133,7 @@ const SignupForm = ({ openLoginModal, closeRegModal, setAuthStatus }) => {
             }
         }
         catch (error) {
-            setAuthStatus(error.response.data.error, "error")
+            setAuthStatus(capitalize(error.response.data.error), "error")
         } finally {
             setIsLoading(false)
 

@@ -13,7 +13,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { useDispatch, useSelector } from 'react-redux';
 import CreateNewPassword from './CreateNewPassword';
 import { setUserDetails, setUserToken } from '../../features/authSlice';
-import { setUserToStorage } from '../../constants/constants';
+import { capitalize, setUserToStorage } from '../../constants/constants';
 import Toast from 'react-native-toast-message';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -63,7 +63,7 @@ const SigninForm = ({ openRegModal, closeLoginModal, setAuthStatus }) => {
                 })
                 if (response.status === 200) {
                     setUserToStorage(response.data,dispatch)
-                    setAuthStatus(response.data.message, "success")
+                    setAuthStatus(capitalize(response.data.message), "success")
                     setTimeout(() => {
                         closeLoginModal()
                         navigator.replace('App')
@@ -71,7 +71,7 @@ const SigninForm = ({ openRegModal, closeLoginModal, setAuthStatus }) => {
                 }
             }
             catch (error) {
-                setAuthStatus(error.response.data.message, "error")
+                setAuthStatus(capitalize(error.response.data.message), "error")
             } finally {
                 setIsLoading(false)
 

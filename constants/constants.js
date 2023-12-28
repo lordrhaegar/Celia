@@ -288,6 +288,11 @@ export const diabetesQuestions = [
   }
 
 ]
+export const capitalize = (str) =>{
+  return str.replace(/\b\w/g, (char)=>{
+    return char.toUpperCase();
+  });
+}
 
 export const celiaAiBaseUrl = "https://ai-movement-diseases.onrender.com"
 
