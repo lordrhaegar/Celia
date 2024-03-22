@@ -5,6 +5,7 @@ import ConnectButton from '../buttons/ConnectButton'
 import { connectButtonStyles } from '../../styles/connectButtonStyles'
 import { useNavigation } from '@react-navigation/native'
 import { useDispatch } from 'react-redux'
+import { connectOptions } from '../../constants/constants'
 
 const Connect = (props) => {
     const [selectedConnect, setSelectedConnect] = useState({})
@@ -12,17 +13,13 @@ const Connect = (props) => {
     const {closeModal, selectedDate, selectedTime} = props
     const navigator = useNavigation()
     const dispatch = useDispatch()
-    const connectOptions = [
-        { backgroundColor: '#96DADA', iconName: "telephone", title: "Voice call" },
-        { backgroundColor: '#6EBDEA', iconName: "video", title: "Video call" }
-    ]
+
     const setSchedule = (selectedConnecting) => {
         const scheduleObj = {
             date: selectedDate,
             time: selectedTime,
             connect: selectedConnecting
         }
-        console.log(scheduleObj);
         dispatch(setSchedule(scheduleObj))
     }
     return (

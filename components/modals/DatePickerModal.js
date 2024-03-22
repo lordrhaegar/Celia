@@ -17,9 +17,9 @@ const DatePickerModal = ({ date, isDateModal, closeDateModal, setDate }) => {
                 <TouchableOpacity
                     onPress={closeDateModal}
                     style={[StyleSheet.absoluteFill, { backgroundColor: 'rgba(0, 0, 0, 0.5)' }]} />
-                <View style={[styles.modalContainer, { height: "60%" }]}>
+                <View style={[styles.modalContainer]}>
                     <View
-                        className="border-b-2 h-full w-full flex-col items-center justify-center"
+                        className="border-b-2 py-5 w-full flex-col items-center justify-center"
                         style={{
 
                             width: '100%'

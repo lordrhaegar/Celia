@@ -11,7 +11,6 @@ const Diagnosis = ({route}) => {
     const {width, height} = useWindowDimensions();
     const {result} = route.params
     const navigator = useNavigation();
-    console.log("The disease Body", result);
     return (
         <SafeAreaView style={{height: height, backgroundColor: "white"}}>
             

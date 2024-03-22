@@ -31,7 +31,7 @@ const PrivacyBody = ({ isChecked, setIsChecked }) => {
                         resizeMode='cover'
                     />
                 </View>
-                <ScrollView style={docStyles.scrollView}
+                <ScrollView contentContainerStyle={docStyles.scrollView}
                 showsVerticalScrollIndicator={false}
                 bounces={false}
                 >

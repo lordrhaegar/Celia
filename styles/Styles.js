@@ -1,5 +1,4 @@
 import { Platform, StyleSheet } from "react-native";
-import { height, width } from "../constants/constants";
 
 export const styles = StyleSheet.create({
     skipButtonViewStyle: {
@@ -22,7 +21,7 @@ export const styles = StyleSheet.create({
     },
     getStarteButtonViewStyle: {
         position: 'absolute',
-        left: '10%',
+        left: '5%',
     },
     fullScreen: {
         flex: 1
@@ -96,20 +95,20 @@ export const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         paddingVertical: 20,
-        paddingHorizontal: 30
+        paddingHorizontal: 30,
     },
     input: {
         borderWidth: 1,
         paddingHorizontal: 20,
         borderRadius: 500,
-        width: 335,
+        width: "100%",
         height: 56,
     },
     inputError: {
         borderWidth: 1,
         paddingHorizontal: 20,
         borderRadius: 500,
-        width: 335,
+        width: "100%",
         height: 56,
         borderColor: '#DC0D0D',
     },
@@ -117,16 +116,16 @@ export const styles = StyleSheet.create({
         borderColor: '#A5ADB1',
         borderWidth: 1,
         borderRadius: 500,
-        width: 69,
-        height: 48,
+        width: 39,
+        height: 38,
         textAlign: 'center'
     },
     inputCodeError: {
         borderColor: '#DC0D0D',
         borderWidth: 1,
         borderRadius: 500,
-        width: 69,
-        height: 48,
+        width: 39,
+        height: 38,
         textAlign: 'center'
     },
     inputLabel: {
@@ -185,6 +184,8 @@ export const styles = StyleSheet.create({
         alignItems: 'center',
         gap: 8,
         alignSelf: 'stretch',
+        marginBottom: 5,
+        width: "100%"
     },
     alertDropDownItemsText: {
         color: '#000',
@@ -777,7 +778,7 @@ export const styles = StyleSheet.create({
         marginTop: Platform.OS === 'ios' ? 50 : 0
     },
     dropDownText: {
-        color: '#A5ADB1',
+        color: 'black',
         fontSize: 16,
         fontFamily: 'Gilroy',
         fontWeight: '400',

@@ -9,8 +9,8 @@ import GenderModal from '../modals/GenderModal'
 import { useSelector } from 'react-redux'
 
 const ClientBioBody = (props) => {
-    const {setIsChecked, date, setDate, selectedGender, setSelectedGender } = props
-    const {userDetails} = useSelector((state)=>state.auth)
+    const { setIsChecked, date, setDate, selectedGender, setSelectedGender } = props
+    const { userDetails } = useSelector((state) => state.auth)
     const [isDateModal, setIsDateModal] = useState(false);
     const [isGenderModal, setIsGenderModal] = useState(false);
     const openDateModal = () => {
@@ -60,13 +60,13 @@ const ClientBioBody = (props) => {
                     isDateModal={isDateModal}
                     closeDateModal={closeDateModal}
                 />
-            <MaterialIcons
-                onPress={openDateModal}
-                style={{ position: 'absolute', bottom: /*Platform.OS === 'ios' ? height - 430 : height - 387, right: width - 65*/ 15, left: 20 }}
-                size={24}
-                color='#0A74B0'
-                name='today'
-            />
+                <MaterialIcons
+                    onPress={openDateModal}
+                    style={{ position: 'absolute', bottom: /*Platform.OS === 'ios' ? height - 430 : height - 387, right: width - 65*/ 15, left: 20 }}
+                    size={24}
+                    color='#0A74B0'
+                    name='today'
+                />
             </View>
             <View style={styles.genderBody}>
                 <Text
@@ -77,10 +77,10 @@ const ClientBioBody = (props) => {
                         genderOptions.map((gender, index) => (
                             <TouchableOpacity
                                 key={index}
-                                onPress={() => { 
+                                onPress={() => {
                                     setSelectedGender(gender.value)
                                     setIsChecked(true)
-                                 }}
+                                }}
                                 style={[styles.genderButton, { borderColor: selectedGender === gender.value ? '#0D91DC' : '#474A4C' }]}
                             >
                                 <Text

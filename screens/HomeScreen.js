@@ -4,47 +4,31 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { styles } from '../styles/Styles'
 import { AntDesign, Entypo, MaterialIcons } from '@expo/vector-icons'
 import { TextInput } from 'react-native-gesture-handler'
-import { logout, sthetoscope } from '../constants/constants'
+import { apiBaseUrl, checkUserType, convertTimestampToDate, doctorImage, logout, noAppointmentImage, sthetoscope } from '../constants/constants'
 import { useNavigation } from '@react-navigation/native'
 import { useSelector } from 'react-redux'
 import { CommonActions } from '@react-navigation/native'
+import { MotiView } from 'moti'
+import { Easing } from 'react-native-reanimated'
+import CustomModal from '../components/modals/Modal'
+import ScheduleAvailability from '../components/modal body/ScheduleAvailability'
+import DocHeader2 from '../components/includes/DocHeader2'
+import { doctorsStyles } from '../styles/doctorsStyles'
+import axios from 'axios'
 const HomeScreen = ({ route }) => {
-    const { userType } = useSelector((state) => state.auth)
+    const { userType, userDetails, userToken } = useSelector((state) => state.auth)
     const navigator = useNavigation();
-    const {height, width} = Dimensions.get('window')
+    const { height, width } = Dimensions.get('window')
     const [isAlertArrowUp, setIsAlertArrowUp] = useState(true);
     const [isDiagnosisArrowUp, setIsDiagnosisAlertArrowUp] = useState(true)
     const [listing, setListing] = useState([])
-    const {userDetails} = useSelector((state)=>state.auth)
+    const [alerts, setAlerts] = useState([])
+    const [isModalVisible, setIsModalVisible] = useState(false)
+    const [data, setData] = useState([])
+    useEffect(() => {
+        console.log("length====>", listing.length);
+    }, [listing])
     const diagnosisHistory = [
-        {
-            optionOne: "Today",
-            optionTwo: "Headache"
-        },
-        {
-            optionOne: "Today",
-            optionTwo: "Headache"
-        },
-        {
-            optionOne: "Today",
-            optionTwo: "Headache"
-        },
-        {
-            optionOne: "Today",
-            optionTwo: "Headache"
-        },
-        {
-            optionOne: "Today",
-            optionTwo: "Headache"
-        },
-        {
-            optionOne: "Today",
-            optionTwo: "Headache"
-        },
-        {
-            optionOne: "Today",
-            optionTwo: "Headache"
-        },
         {
             optionOne: "Today",
             optionTwo: "Headache"
@@ -64,39 +48,80 @@ const HomeScreen = ({ route }) => {
             optionTwo: "Nnaji Oluchukwu"
         },
     ]
+    const docAlerts = [
+        {
+            title: "Complete your profile",
+            fn: () => { }
+        },
+        {
+            title: "Set up your availability",
+            fn: () => openModal()
+        },
+        {
+            title: "New patient",
+            fn: () => { }
+        },
+        {
+            title: "New message from Rita Ada",
+            fn: () => { }
+        },
+    ]
+    const patientAlerts = [
+        {
+            title: "Complete your profile",
+            fn: () => { navigator.navigate("PatientSettings")}
+        },
+        {
+            title: "Take your meds",
+            fn: () => { }
+        }
+    ]
+    const openModal = ()=>{
+        setIsModalVisible(true)
+    }
+    const closeModal = ()=>{
+        setIsModalVisible(false)
+    }
     const toggleAlertArrow = () => {
         setIsAlertArrowUp(!isAlertArrowUp);
     }
     const toggleDiagnosisArrow = () => {
         setIsDiagnosisAlertArrowUp(!isDiagnosisArrowUp)
     }
-    useEffect(()=>{
-        console.log(userType);
-        if (userType === 'Doctor') {
-            setListing(patients)
-        }else{
-            setListing(diagnosisHistory)
-        }
-    },[])
+    useEffect(() => {
+        (async()=>{
+            if (checkUserType(userType)) {
+                try {
+                   const userDiagnosisHistory = await axios.get(`${apiBaseUrl}/user/diagnosis-history`, {
+                    headers: {
+                        Authorization: `Bearer ${userToken}`
+                    }
+                   })
+                   if (userDiagnosisHistory.status === 200 || userDiagnosisHistory.status === 201) {
+                       setListing(userDiagnosisHistory.data.data)
+                       setAlerts(patientAlerts)
+                   }
+                } catch (error) {
+                    console.log(error.response);
+                }
+            }else{
+                setListing(patients)
+                setAlerts(docAlerts)
+            }
+        })()
+       
+    }, [])
     return (
         <SafeAreaView
-        style={{height: height}}
+            style={{ height: height, backgroundColor: "white", paddingBottom: 15 }}
         >
             <ScrollView
                 bounces={false}
                 showsVerticalScrollIndicator={false}
-                contentContainerStyle={[styles.scrollView ]}>
-                <View style={{ height: "5%" }} className="flex-row px-5 items-center justify-between">
-                    <Text style={styles.title} className="text-black font-medium">{`Hi ${userType === 'Doctor' ? 'Doc' : `there ${userDetails.firstname}`} `}</Text>
-                    <MaterialIcons
-                    onPress={()=>{
-                        logout(navigator, CommonActions)}
-                    }
-                        name='notifications'
-                        size={24}
-                        color="#0A74B0"
-                    />
-                </View>
+                contentContainerStyle={[styles.scrollView]}>
+                <DocHeader2
+                navigator={navigator}
+                />
                 {
                     userType === 'Patient' ? (
                         <View
@@ -121,6 +146,7 @@ const HomeScreen = ({ route }) => {
                                     fontSize: 16,
                                     fontStyle: 'normal',
                                     fontWeight: '400',
+                                    letterSpacing: 1
                                 }}>
                                     I’m here to help you learn more about your health. How are you feeling today?
                                 </Text>
@@ -152,13 +178,14 @@ const HomeScreen = ({ route }) => {
                             <View className="w-full">
                                 <Text style={{ fontFamily: 'Gilroy-M', fontSize: 20, fontStyle: 'normal', fontWeight: '600', color: '#63A7A7' }}>I am Celia</Text>
                             </View>
-                            <View>
+                            <View className="w-full">
                                 <Text style={{
                                     color: '#000',
                                     fontFamily: 'Gilroy-M',
                                     fontSize: 16,
                                     fontStyle: 'normal',
                                     fontWeight: '400',
+                                    letterSpacing: 1
                                 }}>
                                     I’m glad you are here as my human partner to help me help people. Let’s do great things together today.
                                 </Text>
@@ -183,7 +210,7 @@ const HomeScreen = ({ route }) => {
                             style={[styles.input, { width: '100%', borderColor: '#A5ADB1', paddingLeft: 50 }]}
                         />
                         <View
-                            style={{position: 'absolute', left: "5%"}}
+                            style={{ position: 'absolute', left: "5%" }}
                         >
                             <AntDesign
                                 name='search1'
@@ -214,37 +241,45 @@ const HomeScreen = ({ route }) => {
                         </View>
                         {
                             isAlertArrowUp ? (
-                                <View style={styles.alertDropDownItems}>
-                                    <MaterialIcons
-                                        name='notifications'
-                                        size={16}
-                                        color="#0A74B0"
-                                    />
-                                    <Text
-                                        style={styles.alertDropDownItemsText}
-                                    >Take your malaria medicine.</Text>
-                                </View>
+                                <MotiView
+                                from={{scaleY: 0}}
+                                animate={{scaleY: 1}}
+                                exit={{scaleY: 0}}
+                                transition={{
+                                    type: 'spring',
+                                    duration: 2000,
+                                    ease: Easing.bounce
+                                }}
+                                style={{width: "100%"}}
+                                >
+                                    {
+                                        alerts.map((alrt,idx)=>{
+                                            return (
+                                                <TouchableOpacity 
+                                                onPress={alrt.fn}
+                                                activeOpacity={1}
+                                                key={idx} style={styles.alertDropDownItems}>
+                                        <MaterialIcons
+                                            name='notifications'
+                                            size={16}
+                                            color="#7CD1D1"
+                                        />
+                                        <Text
+                                            style={styles.alertDropDownItemsText}
+                                        >{alrt.title}</Text>
+                                    </TouchableOpacity>
+                                            )
+                                        })
+                                    }
+                                </MotiView>
                             ) : (<View />)
                         }
-                        {
-                            isAlertArrowUp ? (
-                                <View style={styles.alertDropDownItems}>
-                                    <MaterialIcons
-                                        name='notifications'
-                                        size={16}
-                                        color="#0A74B0"
-                                    />
-                                    <Text
-                                        style={styles.alertDropDownItemsText}
-                                    >Take your malaria medicine.</Text>
-                                </View>
-                            ) : (<View />)
-                        }
+
                     </View>
                     <View
                         style={styles.dropDownCard}>
                         <View style={styles.dropDownHeader}>
-                            <Text style={styles.diagnosisDropDownHeading}>{userType === 'Doctor' ? 'Patients' : 'Diagnosis history'}</Text>
+                            <Text style={styles.diagnosisDropDownHeading}>{userType === 'Doctor' ? 'Patients Diagnosis history' : 'Diagnosis history'}</Text>
                             <Entypo
                                 onPress={toggleDiagnosisArrow}
                                 name={isDiagnosisArrowUp ? 'chevron-up' : 'chevron-down'}
@@ -255,22 +290,43 @@ const HomeScreen = ({ route }) => {
                         {
                             isDiagnosisArrowUp ?
                                 listing.map((list, index) => {
+                                    const {diagnosis, prescription, doctor, date} = list;
                                     return (
-                                        <View
+                                        <MotiView
+                                from={{scaleY: 0}}
+                                animate={{scaleY: 1}}
+                                exit={{scaleY: 0}}
+                                transition={{
+                                    type: 'spring',
+                                    duration: 2000,
+                                    ease: Easing.bounce
+                                }}
                                             key={index}
                                             style={styles.diagnosisDropDownItems}>
-                                            <Text
-                                                style={styles.diagnosisDropDownItemsText1}
-                                            >{list.optionOne}</Text>
-                                            <Text
-                                                style={styles.diagnosisDropDownItemsText2}
-                                            >{list.optionTwo}</Text>
-                                            <AntDesign
-                                                name='arrowright'
-                                                size={20}
-                                                color='#666B6E'
-                                            />
-                                        </View>
+                                                <TouchableOpacity 
+                                                className="w-full" 
+                                                style={styles.diagnosisDropDownItems}
+                                                onPress={()=>navigator.navigate("DiagnosisHistory", {diagnosis: diagnosis, prescription: prescription, doc: doctor })}
+                                                >
+
+                                                    <View style={doctorsStyles.imageContainer}>
+                                                                        <Image
+                                                                            source={noAppointmentImage}
+                                                                            style={{ flex: 1 }}
+                                                                        />
+                                                                    </View>
+                                                                    <View>
+                                                                    <Text style={styles.diagnosisDropDownItemsText2}>{doctor.firstname} {doctor.lastname}</Text>
+                                                                    <Text style={styles.diagnosisDropDownItemsText2}>{convertTimestampToDate(date)}</Text>
+                                                                    </View>
+                                                    
+                                                    <AntDesign
+                                                        name='arrowright'
+                                                        size={20}
+                                                        color='#666B6E'
+                                                    />
+                                                </TouchableOpacity>
+                                        </MotiView>
                                     )
                                 }) : (<View />)
                         }
@@ -297,6 +353,14 @@ const HomeScreen = ({ route }) => {
                     </View>
 
                 </View>
+                <CustomModal
+                closeModal={closeModal} 
+                visibility={isModalVisible} 
+                animationType="fade" 
+                component={<ScheduleAvailability
+                navigation={navigator}
+                />}
+                />
             </ScrollView>
         </SafeAreaView >
     )

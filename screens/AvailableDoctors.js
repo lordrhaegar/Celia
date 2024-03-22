@@ -33,7 +33,7 @@ const AvailableDoctors = ({ navigation, route }) => {
         (
             async () => {
                 try {
-                    const getAllDoctorsResponse = await axios.get(`${apiBaseUrl}/doctor/activedoctors`)
+                    const getAllDoctorsResponse = await axios.get(`${apiBaseUrl}/doctor/alldoctors`)
                     if (getAllDoctorsResponse.status === 200 || getAllDoctorsResponse.status === 201) {
                         setDoctors(getAllDoctorsResponse.data.doctors);
                     }
@@ -73,7 +73,7 @@ const AvailableDoctors = ({ navigation, route }) => {
                                 <TouchableOpacity
                                     onPress={() => {
                                         dispatch(setSelectedDoctor(doctor))
-                                        navigation.navigate("DocDetails")
+                                        navigation.navigate("DocDetails", {status: "schedule", appointmentId: ""})
                                     }}
                                     activeOpacity={1}
                                     key={index}

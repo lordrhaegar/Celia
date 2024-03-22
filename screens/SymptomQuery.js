@@ -5,6 +5,7 @@ import Footer from '../components/includes/Footer'
 import SymptomQueryBody from '../components/screen body/SymptomQueryBody'
 import { styles } from '../styles/Styles'
 import axios from 'axios'
+import { apiBaseUrl } from '../constants/constants'
 
 const SymptomQuery = (props) => {
   const pageName = 'SymptomQuery';
@@ -15,7 +16,6 @@ const SymptomQuery = (props) => {
     const [isChecked, setIsChecked] = useState(false)
     const filteredSymptom = () => {
         setFilteredSymptoms(allSymptom.filter(item => item.toLowerCase().includes(symptom.toLowerCase())))
-        console.log(filteredSymptoms);
     }
     const addSymptomToList = (value) => {
       setSymptomList(prevList => [...prevList, value]);
@@ -27,9 +27,8 @@ const SymptomQuery = (props) => {
 }
     useEffect(()=>{
       const fetchAllSymptoms = async ()=>{
-        console.log('heree');
         try {
-          const allSymptoms = await axios.get('https://celiabackendtestapis.onrender.com/diagnosis/symptoms')
+          const allSymptoms = await axios.get(`${apiBaseUrl}/diagnosis/symptoms`)
           setAllSymptoms(allSymptoms.data.symptoms)
 
         } catch (error) {

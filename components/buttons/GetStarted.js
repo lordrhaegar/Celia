@@ -36,7 +36,7 @@ export default function GetStarted({
     setIsOnboardingModal(false)
   },[])
   return (
-    <View style={[styles.getStarteButtonViewStyle, {bottom:  -20}]}>
+    <View style={[styles.getStarteButtonViewStyle, {bottom:  0, left: "7%"}]}>
       <TouchableOpacity onPress={openOnboardingModal} style={[styles.button, {backgroundColor: backgroundColor}]} activeOpacity={0.6}>
         <Text style={styles.buttonText}>Get Started</Text>
       </TouchableOpacity>

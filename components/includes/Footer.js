@@ -7,6 +7,7 @@ import { AntDesign } from '@expo/vector-icons'
 import SaveModal from '../modals/SaveModal'
 import axios from 'axios'
 import { useSelector } from 'react-redux'
+import { apiBaseUrl } from '../../constants/constants'
 
 const Footer = (props) => {
     const { isChecked, pageName, symptomList, result, date, selectedGender } = props
@@ -29,13 +30,12 @@ const Footer = (props) => {
     const fetchDiagnosis = async () => {
         try {
             setIsLoading(true)
-            const diagnosisResponse = await axios.post('https://celiabackendtestapis.onrender.com/diagnosis/diagnose', {
+            const diagnosisResponse = await axios.post(`${apiBaseUrl}/diagnosis/diagnose`, {
                 userSystoms
             })
             setIsLoading(false)
             navigator.navigate('ThankYou', { diagnosisResult: diagnosisResponse.data.diagnosisResult })
         } catch (error) {
-            console.error("An error", error);
         }
     }
     return (

@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native'
+import { View, Text, Dimensions } from 'react-native'
 import React from 'react'
 import { StyleSheet } from 'react-native'
 import celiaStyle from '../../styles/celiaAiStyle'
@@ -7,6 +7,7 @@ import { logoBig } from '../../constants/constants'
 import { Easing } from 'react-native-reanimated'
 
 const CeliaPreloader = () => {
+    const {height,width} = Dimensions.get('window')
     return (
         <View style={[StyleSheet.absoluteFill, { backgroundColor: 'rgba(0, 0, 0, 0.5)' }, celiaStyle.center]}>
             <MotiImage
@@ -18,7 +19,7 @@ const CeliaPreloader = () => {
                     ease: Easing.linear,
                     loop: true
                 }}
-                style={{ width: "20%", height: "20%" }}
+                style={{ width: "20%", height: "20%", position: 'absolute', bottom: height/3 }}
                 resizeMode='contain'
                 source={logoBig} />
         </View>

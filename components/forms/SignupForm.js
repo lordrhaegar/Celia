@@ -6,16 +6,20 @@ import validator from 'validator';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/core';
 import { ALERT_TYPE, Dialog, AlertNotificationRoot } from 'react-native-alert-notification';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Button from '../buttons/Button';
 import FormHeader from '../includes/FormHeader';
 import FormHeaderTitle from '../includes/FormHeaderTitle';
 import { docStyles } from '../../styles/doctorRequirementScreenStyles';
 import { Image } from 'react-native';
-import { apiBaseUrl, capitalize, imageUpload, setUserToStorage, uploadDocument } from '../../constants/constants';
+import { apiBaseUrl, capitalize, imageUpload, setDocToStorage, setUserToStorage, uploadDocument } from '../../constants/constants';
 import DropDownPicker from 'react-native-dropdown-picker';
 import * as DocumentPicker from "expo-document-picker"
 import * as ImagePicker from "expo-image-picker"
+// import {
+//     GoogleSignin,
+//     statusCodes
+// } from "@react-native-google-signin/google-signin"
 
 const SignupForm = ({ openLoginModal, closeRegModal, setAuthStatus }) => {
     const width = useWindowDimensions().width;
@@ -43,11 +47,18 @@ const SignupForm = ({ openLoginModal, closeRegModal, setAuthStatus }) => {
     const [license, setLicense] = useState("")
     const [id_card, setIDCard] = useState("")
     const [image, setImage] = useState(null)
-    useEffect(() => {
-        console.log("license=>", license);
-        console.log("id_card=>", id_card);
-    }, [license, id_card])
+    // useEffect(() => {
+    //     GoogleSignin.configure({
+    //         scopes: ['https://www.googleapis.com/auth/drive.readonly'], // what API you want to access on behalf of the user, default is email and profile
+    //         profileImageSize: 120,
+    //         androidClientId: "4117949233-33rgb76gujgjmlpmun7e0lu59rgg9dpf.apps.googleusercontent.com",
+    //         webClientId: "4117949233-6j94tllnn9tv6f7s0a2p7vgo2c1dtdof.apps.googleusercontent.com",
+    //         iosClientId: "4117949233-mefk4k1nkqch79estefcgmtpaao9kt5d.apps.googleusercontent.com"
+    //     })
+    //     alert("mounted")
+    // }, [])
     const navigator = useNavigation();
+    const dispatch = useDispatch()
     const checkValidEmail = (input) => {
         setIsvalidEmail(validator.isEmail(input));
     }
@@ -69,7 +80,6 @@ const SignupForm = ({ openLoginModal, closeRegModal, setAuthStatus }) => {
                     copyToCacheDirectory: true
                 })
                 if (!imageUploadResult.canceled) {
-                    console.log(imageUploadResult);
                     const formData = new FormData()
                     formData.append('img', {
                         uri: imageUploadResult.assets[0].uri,
@@ -88,26 +98,44 @@ const SignupForm = ({ openLoginModal, closeRegModal, setAuthStatus }) => {
                         }
 
                     } catch (error) {
-                        console.log(error);
                     }finally{
                         setIsUploading(false)
                     }
                 } else if (imageUploadResult.canceled) {
-                    console.log("Canceled");
                 }
             } catch (error) {
-                console.error(error)
             }
         } else {
             alert("Needs Media access permission")
         }
 
     }
+    // const handleRegisterWithGoogle = async()=>{
+    //     try {
+    //         await GoogleSignin.hasPlayServices()
+    //         const userInfo = await GoogleSignin.signIn()
+    //         alert(userInfo)
+    //     } catch (error) {
+    //         if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+    //             // user cancelled the login flow
+    //             alert('1')
+    //           } else if (error.code === statusCodes.IN_PROGRESS) {
+    //             // operation (e.g. sign in) is in progress already
+    //             alert('2')
+    //           } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+    //             // play services not available or outdated
+    //             alert('3')
 
+    //           } else {
+    //             // some other error happened
+    //             alert('4')
+    //           }
+    //     }
+    // }
     const handleRegister = async () => {
         try {
             setIsLoading(true)
-            const response = await axios.post(`https://celiabackendtestapis.onrender.com/${userType === 'Patient' ? 'auth/register' : 'doctor/register'}`, userType === 'Patient' ? {
+            const response = await axios.post(`${apiBaseUrl}/${userType === 'Patient' ? 'auth/register' : 'doctor/register'}`, userType === 'Patient' ? {
                 firstname,
                 lastname,
                 email,
@@ -124,11 +152,18 @@ const SignupForm = ({ openLoginModal, closeRegModal, setAuthStatus }) => {
                 id_card
             })
             if (response.status === 200) {
-                setUserToStorage(response.data,dispatch)
+                if (userType === "Patient") {
+                    setUserToStorage(response.data,dispatch)
+                }else{
+                    setDocToStorage(response.data, dispatch)
+                }
                 setAuthStatus(capitalize(response.data.message), "success")
                 setTimeout(() => {
                     closeRegModal()
-                    navigator.replace('App')
+                    navigator.dispatch(CommonActions.reset({
+                        index: 0,
+                        routes: [{name: "App"}]
+                    }))
                 }, 1000);
             }
         }
@@ -166,9 +201,7 @@ const SignupForm = ({ openLoginModal, closeRegModal, setAuthStatus }) => {
             }
             else {
                 setIsFirstNameEmpty(true)
-            }
-            
-        
+            }   
     }
     return (
         <AlertNotificationRoot>
@@ -409,7 +442,7 @@ const SignupForm = ({ openLoginModal, closeRegModal, setAuthStatus }) => {
                     </TouchableOpacity>
 
                 </View>
-                {/* <View style={[{ width: width - 55 }, styles.avoidKeyboard]} className="flex-row items-center justify-center gap-5">
+                <View style={[{ width: width - 55 }, styles.avoidKeyboard]} className="flex-row items-center justify-center gap-5">
                     <View style={{ height: 1, width: 90 }} className="border-b-2 border-[#CED6DA]"></View>
                     <Text>Or</Text>
                     <View style={{ height: 1, width: 90 }} className="border-b-2 border-[#CED6DA]"></View>
@@ -423,8 +456,9 @@ const SignupForm = ({ openLoginModal, closeRegModal, setAuthStatus }) => {
                         textStyle={styles.buttonText}
                         backgroundColor='white'
                         viewStyle={{ width: "100%" }}
+                        // onPress={()=>handleRegisterWithGoogle()}
                     />
-                </View> */}
+                </View> 
             </ScrollView>
         </AlertNotificationRoot>
     )

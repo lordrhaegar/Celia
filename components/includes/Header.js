@@ -7,7 +7,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useNavigation } from '@react-navigation/native'
 import { setUserType } from '../../features/authSlice'
 
-const Header = ({pageName}) => {
+const Header = (props) => {
+    const {pageName, closeModal} = props
     const navigator = useNavigation()
     const {userType} = useSelector((state)=>state.auth)
     const [isNoticeModal, setIsNoticeModal] = useState(false);
@@ -19,9 +20,9 @@ const Header = ({pageName}) => {
         setIsNoticeModal(false);
     }
     return (
-        <View className="flex-row px-5 items-center justify-between w-full"
+        <View className={`flex-row items-center justify-between w-full`}
         >
-            <Text style={styles.title} className="text-black font-medium">{ pageName === 'Diagnosis' ? 'Diagnosis' : pageName === 'DoctoreRequirementScreen' ? 'Hey there, Doc':'New Diagnosis'}</Text>
+            <Text style={styles.title} className="text-black font-medium">{ pageName === 'Diagnosis' ? 'Diagnosis' : pageName === 'DoctoreRequirementScreen' ? 'Hey there, Doc': pageName === "Ratings"?'Doctor Review':'New Diagnosis'}</Text>
             {
                 userType === "Doctor" ? (
                     <TouchableOpacity
@@ -42,6 +43,9 @@ const Header = ({pageName}) => {
                 ) : (
                     <AntDesign
                 onPress={() => {
+                    if (pageName === "Ratings") {
+                        closeModal()
+                    }
                     openNoticeModal()
                 }}
                 name='closecircle'

@@ -14,10 +14,8 @@ export const handleRegister = async (username, email, password) => {
             password
         });
         
-        console.log(response.data.message);
         navigateToScreen('HomeScreen')
     } catch (error) {
-        console.error('An error occurred', error);
     }
 };
 

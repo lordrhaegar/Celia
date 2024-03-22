@@ -6,26 +6,25 @@ export const docDetailsStyle = StyleSheet.create({
         gap: 30,
         borderColor: 'red',
         borderRadius: 2,
-        height: "100%",
         backgroundColor: '#ffffff',
         // alignItems: 'center'
     },
     imageContainer: {
-        height: 261,
         width: "100%",
+        height: 261
     },
     detailsContainer: {
         width: "100%",
-        marginTop: -70,
         borderTopLeftRadius: 25,
         borderTopRightRadius: 25,
-        backgroundColor: "#FFFFFF",
+        backgroundColor: "#fff",
         height: "50%",
         padding: 20,
-        gap: 20
+        gap: 20,
+        marginTop: -50
     },
     buttonContainer: {
-        width: "100%",
+        width: "45%",
         alignItems: 'center',
         justifyContent: "flex-start",
         paddingVertical: 20,
@@ -59,11 +58,9 @@ export const docDetailsStyle = StyleSheet.create({
     workingTimeContainer: {
         width: '100%',
         paddingVertical: 12,
-        borderTopColor: "#EAEDEF",
-        borderTopWidth: 1,
         justifyContent: 'center',
         alignItems: 'flex-start',
-        gap: 4
+        gap: 10
     },
     reeviewsContainer: {
         width: '80%',
@@ -72,7 +69,8 @@ export const docDetailsStyle = StyleSheet.create({
         borderTopWidth: 1,
         justifyContent: 'center',
         alignItems: 'flex-start',
-        gap: 10
+        gap: 10,
+        marginTop: 40
     },
     scheduleManually: {
         width: '100%',

@@ -95,7 +95,7 @@ const TalkToADoctor = ({ navigation }) => {
                 isChecked ?
                     (<Button
                         textColor="white"
-                        onPress={()=>navigation.navigate("AvailableDoctors")} viewStyle={[styles.getStarteButtonViewStyle, { bottom: 0 }]} buttonStyle={styles.button} backgroundColor="#0D91DC" textStyle={styles.buttonText} title="Show me available doctors" />) : (<View />)
+                        onPress={()=>navigation.navigate("AvailableDoctors")} viewStyle={[styles.getStarteButtonViewStyle, { bottom: 0, left: 0, paddingHorizontal: 20}]} buttonStyle={styles.button} backgroundColor="#0D91DC" textStyle={styles.buttonText} title="Show me available doctors" />) : (<View />)
             }
             <CustomModal
                 visibility={isScheduleModalVisible}

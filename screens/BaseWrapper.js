@@ -10,14 +10,17 @@ import { styles } from '../styles/Styles';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen'
 import OnboadingButton from '../components/buttons/OnboadingButton';
-import { getUserFromStorage } from '../constants/constants';
-import { useDispatch } from 'react-redux';
+import { getDocFromStorage, getUserFromStorage, getUserType } from '../constants/constants';
+import { useDispatch, useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { setUserType } from '../features/authSlice';
+import { CommonActions } from '@react-navigation/native';
 
 
 export default function BaseWrapper({navigation}) {
     const height = useWindowDimensions().height;
     const dispatch = useDispatch()
+    const {userType} = useSelector((state)=>state.auth)
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [fontLoaded, setFontLoaded] = useState(true);
     const [fontsLoaded, fontError] = useFonts({
@@ -32,7 +35,14 @@ export default function BaseWrapper({navigation}) {
     useEffect(()=>{
         if (fontsLoaded || fontError) {
             SplashScreen.hideAsync();
-            getUserFromStorage(navigation,dispatch)
+            (async()=>{
+                const result = await getUserType(dispatch)
+                if (result === "Patient") {
+                    getUserFromStorage(navigation,dispatch, CommonActions)
+                }else if (result === "Doctor"){
+                    getDocFromStorage(navigation,dispatch, CommonActions)
+                }
+            })()
         }
     },[fontsLoaded, fontError])
     // const onLayoutRootView = useCallback(async () => {

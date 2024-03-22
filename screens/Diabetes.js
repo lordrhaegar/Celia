@@ -91,11 +91,9 @@ const Diabetes = ({ route, navigation }) => {
         try {
             const performDiagnosis = await axios.post(`${celiaAiBaseUrl}/${apiEndpoint}/predict`, payload)
             if (performDiagnosis.status === 200 || performDiagnosis.status === 201) {
-                console.log(performDiagnosis.data);
                 navigation.navigate("PredictionScreen", { result: performDiagnosis.data, disease: apiEndpoint })
             }
         } catch (error) {
-            console.error(error)
         } finally {
             setIsLoading(false)
         }

@@ -28,10 +28,6 @@ let suffix = (date.getHours() >= 12) ? 'PM' : 'AM';
 
 let time = `${hours}:${minutes} ${suffix}`;
 
-useEffect(()=>{
-    console.log(time);
-},[])
-
     return (
         <View
             style={[styles.privacyBody, { gap: 10 }]}

@@ -94,6 +94,7 @@ const CeliaAi = ({ navigation }) => {
                         onPress={()=>navigation.navigate("AiHomeScreen")} 
                         viewStyle={[styles.getStarteButtonViewStyle, { bottom: 0 }]} 
                         buttonStyle={styles.button} 
+                        width="90%"
                         backgroundColor="#0D91DC" 
                         textStyle={styles.buttonText} 
                         title="Get started" />) : (<View />)

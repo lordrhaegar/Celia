@@ -3,7 +3,7 @@ import React from 'react'
 import { styles } from '../../styles/Styles'
 
 const CustomModal = (props) => {
-    const {closeModal} = props
+    const {closeModal, height} = props 
   return (
     <Modal
             visible={props.visibility}
@@ -14,7 +14,7 @@ const CustomModal = (props) => {
                 <TouchableOpacity
                     onPress={closeModal}
                     style={[StyleSheet.absoluteFill, { backgroundColor: 'rgba(0, 0, 0, 0.5)' }]} />
-                <View style={[styles.modalContainer]}>
+                <View style={[styles.modalContainer, {height: height}]}>
                     {props.component}
                 </View>
             </View>

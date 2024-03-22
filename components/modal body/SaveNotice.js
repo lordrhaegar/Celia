@@ -21,23 +21,19 @@ const SaveNotice = (props) => {
     }
     setIsLoading(true)
     try {
-      const savingData = await axios.put(`${apiBaseUrl}/auth/update`, payload,{
+      const savingData = await axios.put(`${apiBaseUrl}/user/update`, payload,{
         headers: {
           Authorization: `Bearer ${userToken}`
         },
         withCredentials: true
       })
       if (savingData.status === 200 || savingData.status === 201) {
-        console.log(savingData.data);
         navigator.navigate('Questionnaire')
       }
     } catch (error) {
-      console.log(error.response.data);
     }finally{
       setIsLoading(false)
     }
-    // console.log(payload);
-    // console.log(userToken);
   }
   return (
     <View style={styles.noticeCard}>

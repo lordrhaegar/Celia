@@ -1,14 +1,19 @@
 import { View, Text, TouchableOpacity, TextInput, Platform } from 'react-native'
-import { React, useState } from 'react'
+import { React, useEffect, useState } from 'react'
 import { styles } from '../../styles/Styles';
 import { AntDesign } from '@expo/vector-icons';
 import { KeyboardAvoidingView } from 'react-native';
 import validator from 'validator';
 import { useSelector } from 'react-redux';
 import Button from '../buttons/Button';
+import { apiBaseUrl, checkUserType } from '../../constants/constants';
+import axios from 'axios';
+import Toast from 'react-native-toast-message';
 
-const ForgotPassword = ({ isForgotModalVisible, openCodeModal, closeForgotModal }) => {
+const ForgotPassword = (props) => {
+    const { isForgotModalVisible, openCodeModal, closeForgotModal, setOtpEmail } = props
     const [email, setEmail] = useState('');
+    const [isLoading, setIsLoading] = useState(false)
     const [isValidEmail, setIsvalidEmail] = useState(true);
     const { userType } = useSelector((state) => state.auth)
     const onPress = () => {
@@ -20,19 +25,32 @@ const ForgotPassword = ({ isForgotModalVisible, openCodeModal, closeForgotModal 
     const checkValidEmail = (input) => {
         setIsvalidEmail(validator.isEmail(input));
     }
-    const handleRegister = async () => {
+    const sendOtp = async () => {
         try {
-            const response = await axios.post('http://localhost:3000/api/register', {
-                username,
-                email,
-                password
+            setIsLoading(true)
+            const sendingOtp = await axios.post(`${apiBaseUrl}/${checkUserType(userType)?"auth":"doctor"}/password/request-reset`, {
+                email
             });
+            if (sendingOtp.status === 200 || sendingOtp.status === 201)
+            {
+                Toast.show({
+                    type: "success",
+                    text1: sendingOtp.data.message
+                })
+                onPress()
+            }
 
-            console.log(response.data.message);
-        } catch (error) {
-            console.error('An error occurred', error);
+        } catch (err) {
+            const {error, message} = err.response.data
+            Toast.show({
+                type: "error",
+                text1: error || message
+            })
+        }finally{
+            setIsLoading(false)
         }
     };
+    
     return (
         <KeyboardAvoidingView behavior={Platform.OS === 'android' ? 'height' : 'padding'}>
             <View style={styles.container}>
@@ -64,7 +82,10 @@ const ForgotPassword = ({ isForgotModalVisible, openCodeModal, closeForgotModal 
                     <TextInput
                         onChangeText={(text) => {
                             checkValidEmail(text);
-                            isValidEmail ? setEmail(text) : null
+                            if (isValidEmail) {
+                                setEmail(text)
+                                setOtpEmail(text)
+                            }
                         }}
                         keyboardType='email-address'
                         style={isValidEmail ? styles.input : styles.inputError} />
@@ -89,23 +110,18 @@ const ForgotPassword = ({ isForgotModalVisible, openCodeModal, closeForgotModal 
                         fontWeight: '400',
                         fontFamily: "Gilroy-l"
                     }}>
-                        A short code will be sent to the email verify if this account actually belongs to you.
+                        A short code will be sent to the email to verify if this account actually belongs to you.
                     </Text>
                 </View>
-                <Button title={"Send Code"} buttonStyle={styles.button} textStyle={styles.buttonText} textColor={"#FFFBFB"} onPress={onPress} />
-                {/* <View style={styles.avoidKeyboard} className="w-full">
-                    <TouchableOpacity
-                        onPress={() => {
-                            if (isForgotModalVisible) {
-                                openCodeModal();
-                                closeForgotModal();
-                            }
-                        }}
-                        style={[styles.button, { backgroundColor: userType === 'Doctor' ? '#7CD1D1' : "#0D91DC" }]}
-                    >
-                        <Text style={styles.buttonText} className="text-[#FFFBFB]">Send code</Text>
-                    </TouchableOpacity>
-                </View> */}
+                <Button 
+                title={"Send Code"} 
+                buttonStyle={styles.button} 
+                textStyle={styles.buttonText} 
+                textColor={"#FFFBFB"} 
+                onPress={sendOtp}
+                isLoading={isLoading}
+                disabled={isLoading}
+                />
             </View>
         </KeyboardAvoidingView>
     )

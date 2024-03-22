@@ -7,14 +7,14 @@ import ForgotPassword from './ForgotPassword';
 import InputCode from './InputCode';
 import validator from 'validator';
 import axios from 'axios';
-import { useNavigation } from '@react-navigation/native';
+import { CommonActions, useNavigation } from '@react-navigation/native';
 import { ALERT_TYPE, AlertNotificationRoot, Dialog } from 'react-native-alert-notification';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useDispatch, useSelector } from 'react-redux';
 import CreateNewPassword from './CreateNewPassword';
 import { setUserDetails, setUserToken } from '../../features/authSlice';
-import { capitalize, setUserToStorage } from '../../constants/constants';
-import Toast from 'react-native-toast-message';
+import { apiBaseUrl, capitalize, setDocToStorage, setUserToStorage } from '../../constants/constants';
+import Toast, { BaseToast, ErrorToast } from 'react-native-toast-message';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 const SigninForm = ({ openRegModal, closeLoginModal, setAuthStatus }) => {
@@ -28,6 +28,7 @@ const SigninForm = ({ openRegModal, closeLoginModal, setAuthStatus }) => {
     const [isValidEmail, setIsvalidEmail] = useState(true);
     const [isLoading, setIsLoading] = useState(false);
     const { userType } = useSelector((state) => state.auth)
+    const [otpEmail, setOtpEmail] = useState("")
     const dispatch = useDispatch()
     const navigator = useNavigation();
     const checkValidEmail = (input) => {
@@ -54,19 +55,66 @@ const SigninForm = ({ openRegModal, closeLoginModal, setAuthStatus }) => {
     const closeCreatePass = () => {
         setCreatePassModalVisible(false)
     }
+    const getOtpEmail = (email)=> {
+        return email
+    }
+    const toastConfig = {
+        /*
+          Overwrite 'success' type,
+          by modifying the existing `BaseToast` component
+        */
+        success: (props) => (
+          <BaseToast
+            {...props}
+            style={{backgroundColor: "#198754" }}
+            contentContainerStyle={{ paddingHorizontal: 15 }}
+            text1Style={{
+              fontSize: 15,
+              fontWeight: '400',
+              fontFamily: "Gilroy-M",
+              color: "white"
+            }}
+          />
+        ),
+        /*
+          Overwrite 'error' type,
+          by modifying the existing `ErrorToast` component
+        */
+        error: (props) => (
+          <ErrorToast
+            {...props}
+            style={{backgroundColor: "#DC0D0D", flexWrap: 'wrap' }}
+            contentContainerStyle={{ paddingHorizontal: 15 }}
+            text1Style={{
+              fontSize: 17,
+              color: "white"
+            }}
+            text2Style={{
+              fontSize: 15
+            }}
+          />
+        ),
+          }
     const handleLogin = async () => {
             try {
                 setIsLoading(true)
-                const response = await axios.post(`https://celiabackendtestapis.onrender.com/${userType === 'Patient' ? 'auth/login':'doctor/login'}`, {
+                const response = await axios.post(`${apiBaseUrl}/${userType === 'Patient' ? 'user/login':'doctor/login'}`, {
                     email,
                     password
                 })
                 if (response.status === 200) {
-                    setUserToStorage(response.data,dispatch)
+                    if (userType === "Patient") {
+                        setUserToStorage(response.data,dispatch)
+                    }else{
+                        setDocToStorage(response.data, dispatch)
+                    }
                     setAuthStatus(capitalize(response.data.message), "success")
                     setTimeout(() => {
                         closeLoginModal()
-                        navigator.replace('App')
+                        navigator.dispatch(CommonActions.reset({
+                            index: 0,
+                            routes: [{name: "App"}]
+                        }))
                     }, 1000);
                 }
             }
@@ -129,25 +177,38 @@ const SigninForm = ({ openRegModal, closeLoginModal, setAuthStatus }) => {
                 <View style={styles.avoidKeyboard} className="w-full gap-3">
                     <View style={{ width: 335 }} className="w-full flex-row justify-between">
                         <Text style={styles.inputLabel}>Enter your password</Text>
-                        {/* <TouchableOpacity
+                        <TouchableOpacity
                             onPress={openForgotModal}
                         >
                             <Text style={styles.inputLabel} className="text-[#EA6E6E]">Forgot password?</Text>
-                        </TouchableOpacity> */}
+                        </TouchableOpacity>
                         <Modal
                             visible={isForgotModalVisible ? isForgotModalVisible : isCodeModalVisible ? isCodeModalVisible : isCreatePassVisible ? isCreatePassVisible : false}
                             animationType='slide'
                             transparent={true}
                         >
                             <View style={styles.modalBackground}>
+                                <Toast config={toastConfig}/>
                                 <View style={styles.modalContainer}>
                                     {
                                         isForgotModalVisible ? (
-                                            <ForgotPassword isForgotModalVisible={isForgotModalVisible} openCodeModal={openCodeModal} closeForgotModal={closeForgotModal} />
+                                            <ForgotPassword 
+                                            isForgotModalVisible={isForgotModalVisible} 
+                                            openCodeModal={openCodeModal} 
+                                            closeForgotModal={closeForgotModal}
+                                            setOtpEmail={setOtpEmail}
+                                            />
                                         ) : isCodeModalVisible ? (
-                                            // <CreateNewPassword title={'Create new password'} closeModal={closeCodeModal} />
-                                            <InputCode closeCodeModal={closeCodeModal} openCreatePassModal={openCreatePass} />
-                                        ) : isCreatePassVisible ? (<CreateNewPassword title={'Create new password'} closeModal={closeCreatePass} />) :
+                                            <InputCode 
+                                            closeCodeModal={closeCodeModal} 
+                                            openCreatePassModal={openCreatePass} 
+                                            otpEmail={otpEmail}
+                                            />
+                                        ) : isCreatePassVisible ? (
+                                            <CreateNewPassword 
+                                            title={'Create new password'} 
+                                            closeModal={closeCreatePass} />
+                                        ) :
                                             (<View />)
                                     }
                                 </View>

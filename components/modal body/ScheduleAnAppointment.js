@@ -53,6 +53,7 @@ const ScheduleAnAppointment = ({ navigation, closeModal }) => {
                         <Button
                             textColor="white"
                             buttonStyle={styles.button}
+                            width="90%"
                             textStyle={styles.buttonText}
                             viewStyle={[docDetailsStyle.buttonContainer, { paddingVertical: 0 }]}
                             title={"Use Calendaly"} 
@@ -61,6 +62,7 @@ const ScheduleAnAppointment = ({ navigation, closeModal }) => {
                         <Button
                             buttonStyle={styles.button2}
                             backgroundColor='white'
+                            width="90%"
                             textStyle={styles.buttonText}
                             viewStyle={[docDetailsStyle.buttonContainer, { paddingVertical: 0 }]}
                             title={"Apple Calendar Coming Soon"} />

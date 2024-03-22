@@ -7,14 +7,22 @@ import { useEffect } from 'react'
 import SymptomModal from '../modals/SymptomModal'
 import SymptomSelectModal from '../modals/SymptomSelectModal'
 import { AntDesign } from '@expo/vector-icons'
+import { useDispatch, useSelector } from 'react-redux'
+import { setSymptomList } from '../../features/symptomsSlice'
 
 const SymptomQueryBody = (props) => {
     const {removeSymptomFromList, symptomList, symptom, setSymptom, addSymptomToList, setIsChecked} = props
     const [isSymptomModal, setIsSymptomModal] = useState(false);
     const [isSelectSymptomModal, setIsSelectSymptomModal] = useState(false);
+    const {symptomsList} =useSelector((state)=>state.symptom)
+    const dispatch = useDispatch()
     useEffect(()=>{
-        symptomList.length > 0 ? setIsChecked(true) : setIsChecked(false)
+        symptomList.length > 0 ? setSymptomToStore() : setIsChecked(false)
     },[symptomList])
+    const setSymptomToStore = ()=>{
+        dispatch(setSymptomList(symptomList))
+        setIsChecked(true)
+    }
     const openSymptomModal = () => {
         setIsSymptomModal(true);
     }
