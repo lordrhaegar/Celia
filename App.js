@@ -39,72 +39,73 @@ import DocAppointmentHistory from './screens/DocAppointmentHistory';
 import PatientSettings from './screens/PatientSettings';
 import DiagnosisHistory from './screens/DiagnosisHistory';
 import PatientDetails from './screens/PatientDetails';
-// import * as Notifications from "expo-notifications"
-// import Constants from 'expo-constants'
-// import * as Device from 'expo-device'
+import * as Device from 'expo-device';
+import * as Notifications from 'expo-notifications';
+import Constants from 'expo-constants';
 import { Platform } from 'react-native';
 
-// Notifications.setNotificationHandler({
-//   handleNotification: async () => ({
-//     shouldShowAlert: true,
-//     shouldPlaySound: false,
-//     shouldSetBadge: false
-//   })
-// })
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: false,
+  }),
+});
 
-// const sendPushNotifications = async (expoPushToken) => {
-//   const message = {
-//     to: expoPushToken,
-//     sound: 'default',
-//     title: 'Original Title',
-//     body: 'And here is the body!',
-//     data: { someData: 'goes here' },
-//   };
-//   await fetch('https://exp.host/--/api/v2/push/send', {
-//     method: 'POST',
-//     headers: {
-//       Accept: 'application/json',
-//       'Accept-encoding': 'gzip, deflate',
-//       'Content-Type': 'application/json',
-//     },
-//     body: JSON.stringify(message),
-//   });
-// }
+// Can use this function below or use Expo's Push Notification Tool from: https://expo.dev/notifications
+async function sendPushNotification(expoPushToken) {
+  const message = {
+    to: expoPushToken,
+    sound: 'default',
+    title: 'Original Title',
+    body: 'And here is the body!',
+    data: { someData: 'goes here' },
+  };
 
-// const registerForPushNotificationsAsync = async () => {
-//   let token;
-//   if (Platform.OS === 'android') {
-//     Notifications.setNotificationChannelAsync('default',{
-//       name: 'default',
-//       importance: Notifications.AndroidImportance.MAX,
-//       vibrationPattern: [0, 250, 250, 250],
-//       lightColor: '#FF231F7C',
-//       darkColor: '#FF231F7C',
-//       sound: true,
-//     })
-//   }
-//   if (Device.isDevice) {
-//     const {status : existingStatus} = await Notification.getPermissionsAsync()
-//     console.log(existingStatus);
-//     const finalStatus = existingStatus
-//     if (finalStatus !== 'granted') 
-//     {
-//         const {status} = await Notification.requestPermissionsAsync()
-//         const finalStatus = status
-//         if (finalStatus!== 'granted') {
-//             console.log('Failed to get push token for push notification!')
-//             return;
-//         }
-//         token = await Notification.getExpoPushTokenAsync({
-//           projectId: Constants.easConfig.projectId
-//         })
-//         console.log(token);
-//     }
-//   }else{
-//     console.log('Must use physical device for Push Notifications');
-//   }
-//   return token.data
-// }
+  await fetch('https://exp.host/--/api/v2/push/send', {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Accept-encoding': 'gzip, deflate',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(message),
+  });
+}
+
+async function registerForPushNotificationsAsync() {
+  let token;
+
+  if (Platform.OS === 'android') {
+    Notifications.setNotificationChannelAsync('default', {
+      name: 'default',
+      importance: Notifications.AndroidImportance.MAX,
+      vibrationPattern: [0, 250, 250, 250],
+      lightColor: '#FF231F7C',
+    });
+  }
+
+  if (Device.isDevice) {
+    const { status: existingStatus } = await Notifications.getPermissionsAsync();
+    let finalStatus = existingStatus;
+    if (existingStatus !== 'granted') {
+      const { status } = await Notifications.requestPermissionsAsync();
+      finalStatus = status;
+    }
+    if (finalStatus !== 'granted') {
+      alert('Failed to get push token for push notification!');
+      return;
+    }
+    token = await Notifications.getExpoPushTokenAsync({
+      projectId: Constants.expoConfig.extra.eas.projectId,
+    });
+    console.log(token);
+  } else {
+    alert('Must use physical device for Push Notifications');
+  }
+
+  return token.data;
+}
 const Stack = createStackNavigator();
 const toastConfig = {
   /*
@@ -150,22 +151,22 @@ export default function App() {
   const notificationListener = useRef();
   const responseListener = useRef();
 
-  // useEffect(() => {
-  //   registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
+  useEffect(() => {
+    registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
 
-  //   notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
-  //     setNotification(notification);
-  //   });
+    notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+      setNotification(notification);
+    });
 
-  //   responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-  //     console.log(response);
-  //   });
+    responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+      console.log(response);
+    });
 
-  //   return () => {
-  //     Notifications.removeNotificationSubscription(notificationListener.current);
-  //     Notifications.removeNotificationSubscription(responseListener.current);
-  //   };
-  // }, []);
+    return () => {
+      Notifications.removeNotificationSubscription(notificationListener.current);
+      Notifications.removeNotificationSubscription(responseListener.current);
+    };
+  }, []);
   async function onFetchUpdateAsync() {
     try {
       const update = await Updates.checkForUpdateAsync();
