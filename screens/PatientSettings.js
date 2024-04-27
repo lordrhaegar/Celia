@@ -102,6 +102,7 @@ const PatientSettings = ({ navigation }) => {
     const [placeOfOrigin, setPlaceOfOrigin] = useState("")
     const [lga, setLga] = useState("")
     const [nextOfKinPhone, setNextOfKinPhone] = useState("")
+    const [profile_img, setProfile_img] = useState("")
     useEffect(() => {
         console.log("allergies=>", allergies);
     }, [allergies])
@@ -221,7 +222,7 @@ const PatientSettings = ({ navigation }) => {
     }, [])
     useEffect(() => {
         (async () => {
-            const getUserData = await axios.get(`${apiBaseUrl}/${checkUserType(userType) ? 'user' : 'doctor/doctor'}/${_id}`)
+            const getUserData = await axios.get(`${apiBaseUrl}/${checkUserType(userType) ? 'user' : 'doctor'}/${_id}`)
             if (getUserData.status === 200) {
                 const {
                     firstname,
@@ -247,13 +248,15 @@ const PatientSettings = ({ navigation }) => {
                     town,
                     lga,
                     height,
-                    weight
+                    weight,
+                    profile_img
                 } = getUserData.data.user || getUserData.data.doctor
                 setFullname(`${firstname} ${lastname}`)
                 setGender(gender)
                 setDate(convertTimestampToDateFormat(date_of_birth))
                 setSpeciality(speciality)
                 setMobileNo(mobile)
+                setProfile_img(profile_img)
                 if (checkUserType(userType)) {
                     setDiabetic(diabetic)
                     setAsmathic(asthmatic)
@@ -361,7 +364,7 @@ const PatientSettings = ({ navigation }) => {
         }
         setIsLoading(true)
         try {
-            const profileUpdate = await axios.put(`${apiBaseUrl}/${checkUserType(userType) ? "auth" : "doctor"}/update`, payload, {
+            const profileUpdate = await axios.put(`${apiBaseUrl}/${checkUserType(userType) ? "user" : "doctor"}/update`, payload, {
                 headers: {
                     Authorization: `Bearer ${userToken}`
                 }
@@ -498,7 +501,7 @@ const PatientSettings = ({ navigation }) => {
                 <View
                     style={docDetailsStyle.imageContainer}>
                     <Image
-                        source={doctor}
+                        source={{uri: profile_img}}
                         style={{ flex: 1, width: "100%" }}
                         resizeMode='cover'
                     />

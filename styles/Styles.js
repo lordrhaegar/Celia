@@ -185,11 +185,20 @@ export const styles = StyleSheet.create({
         gap: 8,
         alignSelf: 'stretch',
         marginBottom: 5,
-        width: "100%"
+        width: "100%",
+        justifyContent: 'space-around'
+    },
+    alertDropDownItemsH1: {
+        color: '#000',
+        fontFamily: 'Gilroy-M',
+        fontSize: 14,
+        fontStyle: 'normal',
+        fontWeight: '600',
+        lineHeight: 20,
     },
     alertDropDownItemsText: {
         color: '#000',
-        fontFamily: 'Gilroy-M',
+        fontFamily: 'Gilroy',
         fontSize: 14,
         fontStyle: 'normal',
         fontWeight: '400',

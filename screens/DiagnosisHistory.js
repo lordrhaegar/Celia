@@ -12,19 +12,31 @@ import Calendar from '../components/calender/CalendarPreview'
 import { MotiView } from 'moti'
 import { Easing } from 'react-native-reanimated'
 import { availabilitySetupStyles } from '../styles/availabilitySetupStyles'
-import { checkUserType, doctorImage } from '../constants/constants'
+import { apiBaseUrl, checkUserType, doctorImage, getAge } from '../constants/constants'
 import { upcomingAppointmentStyles } from '../styles/upcomingAppointmentStyles'
 import { diagnosisHistoryStyle } from '../styles/diagnosisHistoryStyle'
+import axios from 'axios'
 
 const DiagnosisHistory = ({ navigation, route }) => {
     const { height } = useWindowDimensions()
     const {diagnosis, prescription, doc} = route.params
+    const {userType} = useSelector((state)=>state.auth)
+    const [docDetails, setDocDetails] = useState({})
+    const {firstname, lastname, gender, date_of_birth, speciality} = docDetails
     const {
-        firstname, 
-        lastname,
+        id
     } = doc
     useEffect(()=>{
-        console.log(doc);
+        (async()=>{
+            try {
+                const userData = await axios.get(`${apiBaseUrl}/${checkUserType(userType)?"doctor":"user"}/${id}`)
+                if (userData.status === 200 || userData.status === 201){
+                    setDocDetails(userData.data.user || userData.data.doctor);
+                }
+            } catch (error) {
+                console.log(error.response.data);
+            }
+        })()
     },[])
     return (
         <SafeAreaView
@@ -54,21 +66,23 @@ const DiagnosisHistory = ({ navigation, route }) => {
                     style={docDetailsStyle.detailsContainer}>
                     <View className="w-full justify-between items-center flex-row">
                         <View style={{ gap: 10 }}>
-                            <Text style={availabilitySetupStyles.h1}>Dr {firstname} {lastname}</Text>
-                            <Text style={availableDoctorsModalStyles.docOccupation}>Speciality</Text>
+                            <Text style={availabilitySetupStyles.h1}>{checkUserType(userType)? "Dr": ""} {firstname} {lastname}</Text>
+                            <Text style={availableDoctorsModalStyles.docOccupation}>{checkUserType(userType)?speciality:gender}</Text>
+                            <Text style={availableDoctorsModalStyles.docOccupation}>{checkUserType(userType)?"":`${getAge(date_of_birth)} years old`}</Text>
                             {/* <Text style={availableDoctorsModalStyles.docHospital}>{doctor.hospital}</Text> */}
                         </View>
                         <TouchableOpacity
                             activeOpacity={1}
-                            // onPress={()=>{
-                            //     checkUserType(userType) ? navigation.navigate("DocDetails",
-                            //     {
-                            //         status: "doctorBio",
-                            //         appointmentId: details.doctorId
-                            //     }) : console.log(userType);
-                            // }}
+                            onPress={()=>{
+                                 navigation.navigate(checkUserType(userType) ? "DocDetails" : "PatientDetails",
+                                 checkUserType(userType)?
+                                {
+                                    status: "doctorBio",
+                                    appointmentId: details.doctorId
+                                }: {user: docDetails} ) 
+                            }}
                             style={[upcomingAppointmentStyles.joinMeetingContainer, { backgroundColor: "#F3F5F6" }]}>
-                            <Text style={upcomingAppointmentStyles.joinMeetingContainerText}>{/*`View ${checkUserType(userType) ? "Doctor" : "Patient"} bio`*/ "View Doctor Bio"}</Text>
+                            <Text style={upcomingAppointmentStyles.joinMeetingContainerText}>{`View ${checkUserType(userType) ? "Doctor" : "Patient"} bio`}</Text>
                             <AntDesign
                                 name='arrowright'
                                 size={20}

@@ -4,7 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { styles } from '../styles/Styles'
 import { AntDesign, Entypo, MaterialIcons } from '@expo/vector-icons'
 import { TextInput } from 'react-native-gesture-handler'
-import { apiBaseUrl, checkUserType, convertTimestampToDate, doctorImage, logout, noAppointmentImage, sthetoscope } from '../constants/constants'
+import { apiBaseUrl, backgroundColors, checkUserType, convertTimestampToDate, doctorImage, logout, noAppointmentImage, percentageComplete, sthetoscope } from '../constants/constants'
 import { useNavigation } from '@react-navigation/native'
 import { useSelector } from 'react-redux'
 import { CommonActions } from '@react-navigation/native'
@@ -15,8 +15,16 @@ import ScheduleAvailability from '../components/modal body/ScheduleAvailability'
 import DocHeader2 from '../components/includes/DocHeader2'
 import { doctorsStyles } from '../styles/doctorsStyles'
 import axios from 'axios'
+import SingleProgressBar from '../components/single progress bar/SingleProgressBar'
+import Progressbars from '../components/Progressbars'
+import Checkbox from 'expo-checkbox'
 const HomeScreen = ({ route }) => {
     const { userType, userDetails, userToken } = useSelector((state) => state.auth)
+    const {firstname, lastname, mobile, gender, profile_img, availability, date_of_birth} = userDetails
+    const profileImage = [profile_img]
+    const personalInformation = [`${firstname} ${lastname}`, mobile, gender]
+    const personalUserInformation = [`${firstname} ${lastname}`, gender, date_of_birth]
+    const availabilityInformation = availability
     const navigator = useNavigation();
     const { height, width } = Dimensions.get('window')
     const [isAlertArrowUp, setIsAlertArrowUp] = useState(true);
@@ -24,9 +32,9 @@ const HomeScreen = ({ route }) => {
     const [listing, setListing] = useState([])
     const [alerts, setAlerts] = useState([])
     const [isModalVisible, setIsModalVisible] = useState(false)
-    const [data, setData] = useState([])
+    const {patientSelectedBackground, doctorSelectedBackground} = backgroundColors
     useEffect(() => {
-        console.log("length====>", listing.length);
+        console.log("personal====>", profile_img);
     }, [listing])
     const diagnosisHistory = [
         {
@@ -48,34 +56,43 @@ const HomeScreen = ({ route }) => {
             optionTwo: "Nnaji Oluchukwu"
         },
     ]
-    const docAlerts = [
-        {
-            title: "Complete your profile",
-            fn: () => { }
-        },
+    const docAlerts = checkUserType(userType)?[]: [
         {
             title: "Set up your availability",
+            progressbar: <SingleProgressBar percentage={percentageComplete(availability)} height={4}/>,
+            checkIcon:
+            <Checkbox
+                value={percentageComplete(availability) === 100}
+                style={{ borderRadius: 20 }}
+                color={checkUserType(userType)?patientSelectedBackground:doctorSelectedBackground}
+            />,
             fn: () => openModal()
         },
         {
-            title: "New patient",
-            fn: () => { }
-        },
-        {
-            title: "New message from Rita Ada",
-            fn: () => { }
-        },
-    ]
-    const patientAlerts = [
-        {
-            title: "Complete your profile",
-            fn: () => { navigator.navigate("PatientSettings")}
-        },
-        {
-            title: "Take your meds",
-            fn: () => { }
+            title: "Personal Information",
+            progressbar: <SingleProgressBar percentage={percentageComplete(personalInformation)} height={4}/>,
+            checkIcon:
+            <Checkbox
+                value={percentageComplete(personalInformation) === 100}
+                style={{ borderRadius: 20 }}
+                color={checkUserType(userType)?patientSelectedBackground:doctorSelectedBackground}
+            />,
+            fn: () => {}
         }
     ]
+    const patientAlerts = checkUserType(userType)? [
+        {
+            title: "Personal Information",
+            progressbar: <SingleProgressBar percentage={percentageComplete(personalUserInformation)} height={4}/>,
+            checkIcon:
+            <Checkbox
+                value={percentageComplete(personalUserInformation) === 100}
+                style={{ borderRadius: 20 }}
+                color={checkUserType(userType)?patientSelectedBackground:doctorSelectedBackground}
+            />,
+            fn: () => { navigator.navigate("PatientSettings")}
+        }
+    ] : []
     const openModal = ()=>{
         setIsModalVisible(true)
     }
@@ -90,24 +107,19 @@ const HomeScreen = ({ route }) => {
     }
     useEffect(() => {
         (async()=>{
-            if (checkUserType(userType)) {
                 try {
-                   const userDiagnosisHistory = await axios.get(`${apiBaseUrl}/user/diagnosis-history`, {
+                   const userDiagnosisHistory = await axios.get(`${apiBaseUrl}/${checkUserType(userType)?"user":"doctor"}/diagnosis-history`, {
                     headers: {
                         Authorization: `Bearer ${userToken}`
                     }
                    })
                    if (userDiagnosisHistory.status === 200 || userDiagnosisHistory.status === 201) {
                        setListing(userDiagnosisHistory.data.data)
-                       setAlerts(patientAlerts)
+                       setAlerts(checkUserType(userType)?patientAlerts:docAlerts)
                    }
                 } catch (error) {
                     console.log(error.response);
                 }
-            }else{
-                setListing(patients)
-                setAlerts(docAlerts)
-            }
         })()
        
     }, [])
@@ -235,7 +247,7 @@ const HomeScreen = ({ route }) => {
                             <Entypo
                                 onPress={toggleAlertArrow}
                                 name={isAlertArrowUp ? 'chevron-up' : 'chevron-down'}
-                                color='#A5ADB1'
+                                color={'#A5ADB1'}
                                 size={20}
                             />
                         </View>
@@ -262,11 +274,15 @@ const HomeScreen = ({ route }) => {
                                         <MaterialIcons
                                             name='notifications'
                                             size={16}
-                                            color="#7CD1D1"
+                                            color={checkUserType(userType)?patientSelectedBackground:doctorSelectedBackground}
                                         />
-                                        <Text
-                                            style={styles.alertDropDownItemsText}
-                                        >{alrt.title}</Text>
+                                        <View >
+                                            <Text
+                                                style={styles.alertDropDownItemsText}
+                                            >{alrt.title}</Text>
+                                            <View style={{height: 30}}>{alrt.progressbar}</View>
+                                        </View>
+                                        <View>{alrt.checkIcon}</View>
                                     </TouchableOpacity>
                                             )
                                         })
@@ -274,6 +290,27 @@ const HomeScreen = ({ route }) => {
                                 </MotiView>
                             ) : (<View />)
                         }
+                        <MotiView
+                                from={{scaleY: 0}}
+                                animate={{scaleY: 1}}
+                                exit={{scaleY: 0}}
+                                transition={{
+                                    type: 'spring',
+                                    duration: 2000,
+                                    ease: Easing.bounce
+                                }} >
+                                    <TouchableOpacity 
+                                    activeOpacity={1}
+                                    onPress={()=>navigator.navigate("Notifications", {data: {personalInformation, profileImage}})}
+                                    style={doctorsStyles.careWorkersItemContainer}>
+                                        <Text style={doctorsStyles.careWorkersItemText}>View all notifications</Text>
+                                        <AntDesign
+                                            name='arrowright'
+                                            size={20}
+                                            color='#666B6E'
+                                        />
+                                    </TouchableOpacity>
+                        </MotiView>
 
                     </View>
                     <View
@@ -290,7 +327,7 @@ const HomeScreen = ({ route }) => {
                         {
                             isDiagnosisArrowUp ?
                                 listing.map((list, index) => {
-                                    const {diagnosis, prescription, doctor, date} = list;
+                                    const {diagnosis, prescription, doctor = list.patient, date} = list;
                                     return (
                                         <MotiView
                                 from={{scaleY: 0}}
@@ -330,6 +367,23 @@ const HomeScreen = ({ route }) => {
                                     )
                                 }) : (<View />)
                         }
+                        <MotiView
+                                from={{scaleY: 0}}
+                                animate={{scaleY: 1}}
+                                exit={{scaleY: 0}}
+                                transition={{
+                                    type: 'spring',
+                                    duration: 2000,
+                                    ease: Easing.bounce
+                                }} style={doctorsStyles.careWorkersItemContainer}>
+                            <Text style={doctorsStyles.careWorkersItemText}>View all diagnosis history</Text>
+                            <AntDesign
+                                name='arrowright'
+                                size={20}
+                                color='#666B6E'
+                                // onPress={()=>navigation.navigate("AppointmentHistory",{appointments: userAppointments})}
+                            />
+                        </MotiView>
                     </View>
                     <View style={styles.blogSection}>
                         <View style={styles.blogCard}>

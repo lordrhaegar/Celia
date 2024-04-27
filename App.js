@@ -43,6 +43,7 @@ import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
 import Constants from 'expo-constants';
 import { Platform } from 'react-native';
+import NotificationScreen from './screens/Notifications';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -236,6 +237,7 @@ export default function App() {
       <Stack.Screen name="PatientSettings" options={{headerShown: false}} component={PatientSettings} />
       <Stack.Screen name="DiagnosisHistory" options={{headerShown: false}} component={DiagnosisHistory} />
       <Stack.Screen name="PatientDetails" options={{headerShown: false}} component={PatientDetails} />
+      <Stack.Screen name="Notifications" options={{headerShown: false}} component={NotificationScreen} />
     </Stack.Navigator>
     <Toast config={toastConfig}/>
     </NavigationContainer>

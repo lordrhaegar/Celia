@@ -473,3 +473,13 @@ export const convertTimestampToDateFormat = (timestamp)=> {
   // Return the date in the desired format
   return `${year}/${month}/${day}`;
 }
+export const percentageComplete =(personalInformation) =>{
+  let baseCount = 0
+  personalInformation.forEach((e)=>{
+      if (e !== "" && e !== undefined) {
+          baseCount += 1
+      }
+      console.log(baseCount);
+  })
+  return (baseCount/personalInformation.length)*100
+}
