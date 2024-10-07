@@ -2,12 +2,12 @@
   "expo": {
     "name": "Celia",
     "slug": "celia",
-    "version": "1.0.0",
+    "version": "1.0.4",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/celia-app-icon.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/celia-app-icon.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -15,29 +15,44 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.aimovement.celia"
     },
     "android": {
+      "googleServicesFile" : "./google-services.json",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/celia-app-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.vladrhaegar.Celia"
+      "package": "com.vladrhaegar.celia",
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "owner": "aimovement",
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "The app accesses your photos to let you share them with your friends.",
+          "cameraPermission": "Allow Celia to access your camera"
+        }
+      ],
+      "@react-native-google-signin/google-signin"
+    ],
     "extra": {
       "eas": {
         "projectId": "ad8df38e-5c46-4990-abcb-4a2d770a967f"
       }
     },
-    "runtimeVersion": {
-      "policy": "appVersion"
-    },
     "updates": {
       "url": "https://u.expo.dev/ad8df38e-5c46-4990-abcb-4a2d770a967f"
-    },
-    "owner": "aimovement"
+    }
   }
 }

@@ -15,7 +15,7 @@ const NewDiagnosis = () => {
             
                 <Header pageName={pageName}/>
                 <PrivacyBody isChecked={isChecked} setIsChecked={setIsChecked}/>
-                <Footer pageName={pageName} isChecked={isChecked}/>
+                <Footer pageName={pageName} isChecked={isChecked} />
 
         </SafeAreaView>
     )

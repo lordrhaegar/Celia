@@ -1,9 +1,15 @@
 import { View, Text, TouchableOpacity, Image } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import { styles } from '../../styles/Styles'
 import { logo } from '../../constants/constants'
 
-const ClientTypeBody = () => {
+const ClientTypeBody = (props) => {
+    const {setIsChecked} = props
+    const [selectedClientType, setSelectedClientType] = useState('');
+    const clientTypeOptions = [
+        { text: 'Myself', value: 'myself' },
+        { text: 'Someone Else', value: 'someoneelse' }
+    ];
     return (
         <View
             style={styles.privacyBody}
@@ -25,21 +31,23 @@ const ClientTypeBody = () => {
                     style={styles.title}
                 >Who is this diagnosis for?</Text>
             </View>
-
-            <TouchableOpacity
-                style={styles.mySelfButton}
-            >
-                <Text
-                    style={styles.mySelfText}
-                >Myself</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-                style={styles.someoneElseButton}
-            >
-                <Text
-                    style={styles.someoneElseText}
-                >Someone else</Text>
-            </TouchableOpacity>
+            {
+                clientTypeOptions.map((clientType, index) => (
+                    <TouchableOpacity
+                        key={index}
+                        onPress={() => {
+                            setSelectedClientType(clientType.value)
+                            setIsChecked(true)
+                        }
+                        }
+                        style={selectedClientType === clientType.value ? styles.mySelfButton : styles.someoneElseButton}
+                    >
+                        <Text
+                            style={selectedClientType === clientType.value ? styles.mySelfText : styles.someoneElseText}
+                        >{clientType.text}</Text>
+                    </TouchableOpacity>
+                ))
+            }
         </View>
     )
 }

@@ -2,8 +2,10 @@ import { View, Text, Image } from 'react-native'
 import React from 'react'
 import { styles } from '../../styles/Styles'
 import { logo } from '../../constants/constants'
+import { useSelector } from 'react-redux'
 
 const ThankYouBody = () => {
+    const {userDetails} = useSelector((state)=>state.auth)
   return (
     <View
             style={styles.privacyBody}
@@ -23,7 +25,7 @@ const ThankYouBody = () => {
             <View>
                 <Text
                     style={styles.title}
-                >Thank you, Ebuka.</Text>
+                >{`Thank you, ${userDetails.firstname}.`}</Text>
             </View>
             <View className="gap-5">
                 <View className="flex-row">

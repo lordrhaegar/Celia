@@ -25,13 +25,15 @@ const OnboardingScreen = () => {
                     duration: 500,
                     useNativeDriver: false,
                 }).start(() => {
-                    slidesRef.current.scrollToIndex({ index: currentIndex + 1, animated: false });
-                    setCurrentIndex(currentIndex + 1);
-                    Animated.timing(fadeValue, {
-                        toValue: 1,
-                        duration: 500,
-                        useNativeDriver: false,
-                    }).start();
+                    if (slidesRef.current) {
+                        slidesRef.current.scrollToIndex({ index: currentIndex + 1, animated: false });
+                        setCurrentIndex(currentIndex + 1);
+                        Animated.timing(fadeValue, {
+                            toValue: 1,
+                            duration: 500,
+                            useNativeDriver: false,
+                        }).start();
+                    }
                 });
             } else {
                 Animated.timing(fadeValue, {
@@ -39,13 +41,15 @@ const OnboardingScreen = () => {
                     duration: 500,
                     useNativeDriver: false,
                 }).start(() => {
-                    slidesRef.current.scrollToIndex({ index: 0, animated: false });
-                    setCurrentIndex(0);
-                    Animated.timing(fadeValue, {
-                        toValue: 1,
-                        duration: 500,
-                        useNativeDriver: false,
-                    }).start();
+                    if (slidesRef.current) {
+                        slidesRef.current.scrollToIndex({ index: 0, animated: false });
+                        setCurrentIndex(0);
+                        Animated.timing(fadeValue, {
+                            toValue: 1,
+                            duration: 500,
+                            useNativeDriver: false,
+                        }).start();
+                    }
                 });
             }
         };
@@ -56,13 +60,11 @@ const OnboardingScreen = () => {
     }, [currentIndex, fadeValue]);
     const opacityValue = new Animated.Value(0);
     const scrollTo = () => {
-        console.log(currentIndex);
         if (currentIndex < slides.length - 1) {
             slidesRef.current.scrollToIndex({ index: currentIndex + 1 })
 
         }
         else {
-            console.log("last");
         }
     }
     return (

@@ -1,18 +1,46 @@
 import { Platform, StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
+    skipButtonViewStyle: {
+        marginTop: Platform.OS === 'ios' ? 80 : 0
+    },
+    skipButtonStyle: {
+        borderColor: '#E4E4E4',
+        borderWidth: 1,
+        borderRadius: 20,
+        width: 69,
+        height: 37,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    skipButtonText: {
+        fontSize: 16,
+        fontWeight: '600',
+        fontFamily: "Gilroy-l",
+        color: '#8E8B8B'
+    },
+    getStarteButtonViewStyle: {
+        position: 'absolute',
+        left: '5%',
+    },
     fullScreen: {
         flex: 1
     },
     safeArea: {
         flex: 1,
         paddingTop: 20,
-        backgroundColor: '#FDFDFD'
+        backgroundColor: '#FDFDFD',
+        marginBottom: -10
     },
     scrollView: {
         width: '100%',
         backgroundColor: '#FDFDFD',
         paddingVertical: 20
+    },
+    backText: {
+        fontFamily: 'Gilroy-M',
+        fontSize: 14,
+        fontWeight: 600
     },
     button: {
         borderWidth: 0,
@@ -21,8 +49,8 @@ export const styles = StyleSheet.create({
         height: 56,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#0D91DC',
-        marginLeft: 5
+        marginLeft: 5,
+        backgroundColor: "#0D91DC"
     },
     buttonRed: {
         borderWidth: 0,
@@ -44,12 +72,14 @@ export const styles = StyleSheet.create({
         borderColor: '#474A4C',
         justifyContent: 'center',
         alignItems: 'center',
-        marginLeft: 5
+        marginLeft: 5,
+        color: "black"
     },
     buttonText: {
         fontFamily: 'Gilroy-M',
         fontWeight: '600',
         fontSize: 16,
+        color: '#FFFBFB'
     },
     title: {
         fontFamily: "Gilroy-M",
@@ -62,24 +92,23 @@ export const styles = StyleSheet.create({
         fontFamily: "Gilroy-l"
     },
     container: {
-        display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
         paddingVertical: 20,
-        paddingHorizontal: 30
+        paddingHorizontal: 30,
     },
     input: {
         borderWidth: 1,
         paddingHorizontal: 20,
         borderRadius: 500,
-        width: 335,
+        width: "100%",
         height: 56,
     },
     inputError: {
         borderWidth: 1,
         paddingHorizontal: 20,
         borderRadius: 500,
-        width: 335,
+        width: "100%",
         height: 56,
         borderColor: '#DC0D0D',
     },
@@ -87,16 +116,16 @@ export const styles = StyleSheet.create({
         borderColor: '#A5ADB1',
         borderWidth: 1,
         borderRadius: 500,
-        width: 69,
-        height: 48,
+        width: 39,
+        height: 38,
         textAlign: 'center'
     },
     inputCodeError: {
         borderColor: '#DC0D0D',
         borderWidth: 1,
         borderRadius: 500,
-        width: 69,
-        height: 48,
+        width: 39,
+        height: 38,
         textAlign: 'center'
     },
     inputLabel: {
@@ -155,10 +184,21 @@ export const styles = StyleSheet.create({
         alignItems: 'center',
         gap: 8,
         alignSelf: 'stretch',
+        marginBottom: 5,
+        width: "100%",
+        justifyContent: 'space-around'
+    },
+    alertDropDownItemsH1: {
+        color: '#000',
+        fontFamily: 'Gilroy-M',
+        fontSize: 14,
+        fontStyle: 'normal',
+        fontWeight: '600',
+        lineHeight: 20,
     },
     alertDropDownItemsText: {
         color: '#000',
-        fontFamily: 'Gilroy-M',
+        fontFamily: 'Gilroy',
         fontSize: 14,
         fontStyle: 'normal',
         fontWeight: '400',
@@ -235,7 +275,6 @@ export const styles = StyleSheet.create({
         lineHeight: 20,
     },
     privacyBody: {
-        display: 'flex',
         height: Platform.OS === 'ios' ? '88%' : null,
         flex: Platform.OS === 'android' ? 1 : null,
         paddingHorizontal: 20,
@@ -401,7 +440,6 @@ export const styles = StyleSheet.create({
         gap: 8,
         display: 'inline-flex',
         borderWidth: 1,
-        borderColor: '#474A4C',
     },
     genderNoticeHeadnig: {
         color: '#0D91DC',
@@ -654,15 +692,104 @@ export const styles = StyleSheet.create({
         backgroundColor: '#FDFDFD',
         alignItems: 'stretch'
     },
-    continueButtonView: { 
-        position: 'absolute', 
-        width: '100%', 
-        alignItems: 'center', 
-        bottom: 10, 
+    continueButtonView: {
+        position: 'absolute',
+        width: '100%',
+        alignItems: 'center',
+        bottom: 10,
         zIndex: 1,
-        paddingHorizontal: 20
+        paddingHorizontal: 20,
+        gap: 20
     },
     diagnosisSpaceBox: {
         height: 52
     },
+    diagnosisSymptomsBody: {
+        width: '100%',
+        padding: 20,
+        justifyContent: 'flex-end',
+        alignItems: 'flex-start',
+        gap: 12,
+        display: 'inline-flex'
+    },
+    diagnosisSymptomsBodyH1: {
+        color: '#27292A',
+        fontSize: 14,
+        fontFamily: 'Gilroy-M',
+        fontWeight: '600',
+        lineHeight: 20,
+    },
+    diagnosisSymptomsBodyParagraph: {
+        color: '#27292A',
+        fontSize: 14,
+        fontFamily: 'Gilroy',
+        fontWeight: '400',
+        lineHeight: 20,
+    },
+    diagnosisDisclaimerBody: {
+        width: '100%',
+        paddingVertical: 32,
+        borderTopWidth: 1,
+        borderColor: '#CED6DA',
+        justifyContent: 'flex-end',
+        alignItems: 'flex-start',
+        gap: 8,
+        display: 'inline-flex'
+    },
+    diagnosisDisclaimerBodyText: {
+        color: '#666B6E',
+        fontSize: 14,
+        fontFamily: 'Gilroy',
+        fontWeight: '400',
+        lineHeight: 20,
+    },
+    diagnosisDisclaimerBodyLinkText: {
+        color: '#0D91DC',
+        fontSize: 14,
+        fontFamily: 'Gilroy',
+        fontWeight: '600',
+        lineHeight: 20,
+    },
+    causesDiagnosisBox: {
+        width: '100%',
+        paddingVertical: 20,
+        borderTopWidth: 1,
+        borderBottomWidth: 1,
+        borderColor: '#CED6DA',
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+        gap: 12,
+        display: 'inline-flex'
+    },
+    causesDiagnosisBoxContentContainer: {
+        width: '100%',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'flex-end',
+        display: 'inline-flex'
+    },
+    causesDiagnosisBoxContentContainerText: {
+        color: '#27292A',
+        fontSize: 14,
+        fontFamily: 'Gilroy',
+        fontWeight: '600',
+        lineHeight: 20,
+    },
+    toastContainer: {
+        width: '95%',
+        height: 70,
+        margin: 10,
+        position: 'absolute',
+        right: '95%',
+        zIndex: 1,
+        padding: 5,
+        borderRadius: 10,
+        marginTop: Platform.OS === 'ios' ? 50 : 0
+    },
+    dropDownText: {
+        color: 'black',
+        fontSize: 16,
+        fontFamily: 'Gilroy',
+        fontWeight: '400',
+    }
 })
