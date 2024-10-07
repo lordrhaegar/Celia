@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "975177785720",
+    "project_id": "celia-bace9",
+    "storage_bucket": "celia-bace9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:975177785720:android:1571b14c24ba6dc4fc288d",
+        "android_client_info": {
+          "package_name": "com.vladrhaegar.celia"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBBrDWYdAy3QQ0sNGg9tCOjnLVfSVSs748"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
